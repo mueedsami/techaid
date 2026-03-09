@@ -44,16 +44,18 @@ export default function AdminInquiriesPage() {
   }, []);
 
   const exportUrl = useMemo(() => {
-    const url = new URL("/api/admin/inquiries-export", window.location.origin);
-    if (q.trim()) url.searchParams.set("q", q.trim());
-    if (status) url.searchParams.set("status", status);
-    return url.toString();
-  }, [q, status]);
+  const params = new URLSearchParams();
+  if (q.trim()) params.set("q", q.trim());
+  if (status) params.set("status", status);
+
+  const query = params.toString();
+  return query ? `/api/admin/inquiries-export?${query}` : "/api/admin/inquiries-export";
+}, [q, status]);
 
   const updateRow = async (
-    id: number,
-    payload: { status?: InquiryStatus; admin_note?: string }
-  ) => {
+  id: number,
+  payload: { status: InquiryStatus; admin_note?: string }
+) => {
     setSavingId(id);
     setError("");
     setSuccess("");
@@ -154,9 +156,9 @@ function InquiryRow({
   item: AdminInquiry;
   saving: boolean;
   onSave: (
-    id: number,
-    payload: { status?: InquiryStatus; admin_note?: string }
-  ) => Promise<void>;
+  id: number,
+  payload: { status: InquiryStatus; admin_note?: string }
+) => Promise<void>;
 }) {
   const [draftStatus, setDraftStatus] = useState<InquiryStatus>(item.status);
   const [draftNote, setDraftNote] = useState(item.admin_note || "");

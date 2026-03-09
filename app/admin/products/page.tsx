@@ -15,6 +15,25 @@ import {
   adminUpdateProduct,
 } from "@/lib/api";
 
+const toLines = (value?: string) =>
+  value ? value.split("\n").map((s) => s.trim()).filter(Boolean) : undefined;
+
+const toSpecPairs = (value?: string) =>
+  value
+    ? value
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const [label, ...rest] = line.split(":");
+          return {
+            label: label?.trim() || "",
+            value: rest.join(":").trim() || "",
+          };
+        })
+        .filter((item) => item.label && item.value)
+    : undefined;
+
 export default function AdminProductsPage() {
   const [items, setItems] = useState<AdminProduct[]>([]);
   const [categories, setCategories] = useState<AdminProductCategory[]>([]);
@@ -81,9 +100,9 @@ export default function AdminProductsPage() {
         sector_tag: newItem.sector_tag || null,
         summary: newItem.summary || null,
         description: newItem.description || null,
-        key_features: newItem.key_features_text || null,
-        educational_objectives: newItem.educational_objectives_text || null,
-        technical_specs: newItem.technical_specs_text || null,
+        key_features: toLines(newItem.key_features_text),
+        educational_objectives: toLines(newItem.educational_objectives_text),
+        technical_specs: toSpecPairs(newItem.technical_specs_text),
         sort_order: Number(newItem.sort_order || 0),
         is_featured: newItem.is_featured,
         is_active: newItem.is_active,
@@ -115,12 +134,12 @@ export default function AdminProductsPage() {
     }
   };
 
-  const saveItem = async (id: number, payload: Partial<AdminProduct> & { educational_objectives?: string }) => {
+  const saveItem = async (id: number, payload: Partial<AdminProduct>) => {
     setSavingId(id);
     setError("");
     setSuccess("");
     try {
-      await adminUpdateProduct(id, payload as any);
+      await adminUpdateProduct(id, payload);
       setSuccess(`Product #${id} updated.`);
       await load();
     } catch (e: any) {
@@ -183,7 +202,9 @@ export default function AdminProductsPage() {
             <label className="mb-1 block text-xs text-white/60">Category</label>
             <select
               value={newItem.product_category_id}
-              onChange={(e) => setNewItem({ ...newItem, product_category_id: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, product_category_id: e.target.value })
+              }
               className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             >
               <option value="">No category</option>
@@ -263,10 +284,14 @@ export default function AdminProductsPage() {
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-white/60">Key Features (one per line)</label>
+            <label className="mb-1 block text-xs text-white/60">
+              Key Features (one per line)
+            </label>
             <textarea
               value={newItem.key_features_text}
-              onChange={(e) => setNewItem({ ...newItem, key_features_text: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, key_features_text: e.target.value })
+              }
               rows={6}
               className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
               placeholder={`Advanced digital interface\nData logging capability\nIndustrial-grade build`}
@@ -280,7 +305,10 @@ export default function AdminProductsPage() {
             <textarea
               value={newItem.educational_objectives_text}
               onChange={(e) =>
-                setNewItem({ ...newItem, educational_objectives_text: e.target.value })
+                setNewItem({
+                  ...newItem,
+                  educational_objectives_text: e.target.value,
+                })
               }
               rows={6}
               className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
@@ -295,7 +323,9 @@ export default function AdminProductsPage() {
           </label>
           <textarea
             value={newItem.technical_specs_text}
-            onChange={(e) => setNewItem({ ...newItem, technical_specs_text: e.target.value })}
+            onChange={(e) =>
+              setNewItem({ ...newItem, technical_specs_text: e.target.value })
+            }
             rows={5}
             className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             placeholder={`Power Supply: 220V AC\nDisplay: Digital PID\nMaterial: Stainless Steel fittings`}
@@ -307,7 +337,9 @@ export default function AdminProductsPage() {
             <input
               type="checkbox"
               checked={newItem.is_featured}
-              onChange={(e) => setNewItem({ ...newItem, is_featured: e.target.checked })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, is_featured: e.target.checked })
+              }
             />
             Featured
           </label>
@@ -367,7 +399,7 @@ function ProductRow({
   item: AdminProduct;
   categories: AdminProductCategory[];
   saving: boolean;
-  onSave: (id: number, payload: any) => Promise<void>;
+  onSave: (id: number, payload: Partial<AdminProduct>) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
 }) {
   const [draft, setDraft] = useState({
@@ -401,9 +433,9 @@ function ProductRow({
       sector_tag: draft.sector_tag || null,
       summary: draft.summary || null,
       description: draft.description || null,
-      key_features: draft.key_features_text || null,
-      educational_objectives: draft.educational_objectives_text || null,
-      technical_specs: draft.technical_specs_text || null,
+      key_features: toLines(draft.key_features_text),
+      educational_objectives: toLines(draft.educational_objectives_text),
+      technical_specs: toSpecPairs(draft.technical_specs_text),
       is_featured: !!draft.is_featured,
       is_active: !!draft.is_active,
       sort_order: Number(draft.sort_order || 0),
@@ -458,15 +490,44 @@ function ProductRow({
           </select>
         </div>
 
-        <AdminInput label="Product Name" value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
-        <AdminInput label="Slug" value={draft.slug} onChange={(v) => setDraft({ ...draft, slug: v })} />
-        <AdminInput label="Short Title" value={draft.short_title || ""} onChange={(v) => setDraft({ ...draft, short_title: v })} />
-        <AdminInput label="Model Code" value={draft.model_code || ""} onChange={(v) => setDraft({ ...draft, model_code: v })} />
-        <AdminInput label="Sector Tag" value={draft.sector_tag || ""} onChange={(v) => setDraft({ ...draft, sector_tag: v })} />
-        <AdminInput label="Sort Order" type="number" value={String(draft.sort_order || 0)} onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })} />
+        <AdminInput
+          label="Product Name"
+          value={draft.name}
+          onChange={(v) => setDraft({ ...draft, name: v })}
+        />
+        <AdminInput
+          label="Slug"
+          value={draft.slug}
+          onChange={(v) => setDraft({ ...draft, slug: v })}
+        />
+        <AdminInput
+          label="Short Title"
+          value={draft.short_title || ""}
+          onChange={(v) => setDraft({ ...draft, short_title: v })}
+        />
+        <AdminInput
+          label="Model Code"
+          value={draft.model_code || ""}
+          onChange={(v) => setDraft({ ...draft, model_code: v })}
+        />
+        <AdminInput
+          label="Sector Tag"
+          value={draft.sector_tag || ""}
+          onChange={(v) => setDraft({ ...draft, sector_tag: v })}
+        />
+        <AdminInput
+          label="Sort Order"
+          type="number"
+          value={String(draft.sort_order || 0)}
+          onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })}
+        />
 
         <div className="md:col-span-2">
-          <AdminInput label="Image URL" value={draft.image_url || ""} onChange={(v) => setDraft({ ...draft, image_url: v })} />
+          <AdminInput
+            label="Image URL"
+            value={draft.image_url || ""}
+            onChange={(v) => setDraft({ ...draft, image_url: v })}
+          />
         </div>
       </div>
 
@@ -492,7 +553,9 @@ function ProductRow({
 
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-white/60">Key Features (one per line)</label>
+          <label className="mb-1 block text-xs text-white/60">
+            Key Features (one per line)
+          </label>
           <textarea
             value={draft.key_features_text}
             onChange={(e) => setDraft({ ...draft, key_features_text: e.target.value })}

@@ -1,81 +1,95 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function AdminLoginPage() {
-  const [password, setPassword] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+function AdminLoginInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/admin";
 
-  const nextPath = searchParams.get("next") || "/admin/inquiries";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const onSubmit = async (e: FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
+    setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/admin/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ action: "login", password }),
-      });
+      // replace this with your real login logic
+      // example:
+      // await adminLogin({ email, password });
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data?.ok) {
-        setError(data?.message || "Login failed.");
-        return;
-      }
-
-      router.replace(nextPath);
-    } catch (e: any) {
-      setError(e?.message || "Login failed.");
+      router.push(redirect);
+    } catch (err: any) {
+      setError(err?.message || "Login failed");
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-4">
-        <div className="w-full max-w-md rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-transparent p-6 md:p-8">
-          <p className="text-sm text-white/60">Admin Access</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight">Sign in to Admin Panel</h1>
-          <p className="mt-2 text-sm text-white/65">
-            Authorized access only. Contact your system administrator if you need credentials.
-          </p>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-6">
+        <h1 className="mb-6 text-2xl font-semibold">Admin Login</h1>
 
-          {error && (
-            <div className="mt-4 rounded-xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
-              {error}
-            </div>
-          )}
+        {error ? (
+          <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+            {error}
+          </div>
+        ) : null}
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-4">
-            <div>
-              <label className="mb-1 block text-sm text-white/80">Admin Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter admin password"
-                className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
-              />
-            </div>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="mb-1 block text-sm text-white/70">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
+              placeholder="Enter email"
+              required
+            />
+          </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/15 disabled:opacity-60"
-            >
-              {submitting ? "Signing in..." : "Sign In"}
-            </button>
-          </form>
-        </div>
+          <div>
+            <label className="mb-1 block text-sm text-white/70">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
       </div>
-    </main>
+    </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black text-white flex items-center justify-center">
+          <p className="text-sm text-white/60">Loading login...</p>
+        </div>
+      }
+    >
+      <AdminLoginInner />
+    </Suspense>
   );
 }
