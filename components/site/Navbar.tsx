@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -99,13 +100,28 @@ export default function Navbar() {
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div style={{ width: 24, height: 24, border: "1px solid var(--gold)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--gold)", fontFamily: "serif" }}>TA</span>
+        <Link href="/" className="group flex items-center gap-3.5">
+          <div
+            className="overflow-hidden rounded-2xl border bg-white/80 p-1.5 shadow-[0_8px_26px_rgba(17,24,39,0.06)] transition-transform duration-300 group-hover:-translate-y-0.5"
+            style={{ borderColor: "var(--gold-border)" }}
+          >
+            <Image
+              src="/technical-aid-logo.png"
+              alt="Technical Aid logo"
+              width={42}
+              height={42}
+              className="h-[42px] w-[42px] object-contain"
+              priority
+            />
           </div>
-          <span className="font-display text-base font-medium tracking-wide" style={{ color: "var(--text)" }}>
-            Technical Aid
-          </span>
+          <div className="leading-none">
+            <span className="font-display block text-[1.02rem] font-semibold tracking-[0.03em]" style={{ color: "var(--text)" }}>
+              Technical Aid
+            </span>
+            <span className="mt-1 block text-[10px] uppercase tracking-[0.28em]" style={{ color: "var(--gold)" }}>
+              Engineering Solutions
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FeaturedProductsCarousel from "@/components/sections/FeaturedProductsCarousel";
 import { fetchProducts, fetchTestimonials, fetchClients } from "@/lib/api";
 
 const services = [
@@ -218,75 +219,76 @@ export default async function HomePage() {
           FEATURED PRODUCTS
       ══════════════════════════════════════════════════ */}
       {featuredProducts.length > 0 && (
-        <section className="px-6 sm:px-10 py-28" style={{ background: "var(--surface-2)" }}>
-          <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-              <div>
-                <span className="gold-line" />
-                <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight tracking-tight">
-                  Featured Products
-                </h2>
-                <p className="mt-4 max-w-xl text-[var(--text-dim)]">
-                  Engineering laboratory equipment and technical systems designed for education and industry.
-                </p>
-              </div>
-              <Link
-                href="/products"
-                className="hover-line self-start text-sm text-[var(--text-dim)] hover:text-[var(--gold)] transition-colors"
-              >
-                View all products →
-              </Link>
-            </div>
+        // <section className="px-6 sm:px-10 py-28" style={{ background: "var(--surface-2)" }}>
+        //   <div className="mx-auto max-w-7xl">
+        //     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        //       <div>
+        //         <span className="gold-line" />
+        //         <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight tracking-tight">
+        //           Featured Products
+        //         </h2>
+        //         <p className="mt-4 max-w-xl text-[var(--text-dim)]">
+        //           Engineering laboratory equipment and technical systems designed for education and industry.
+        //         </p>
+        //       </div>
+        //       <Link
+        //         href="/products"
+        //         className="hover-line self-start text-sm text-[var(--text-dim)] hover:text-[var(--gold)] transition-colors"
+        //       >
+        //         View all products →
+        //       </Link>
+        //     </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {featuredProducts.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/products/${p.slug}`}
-                  className="card-lift group grad-border overflow-hidden flex flex-col"
-                >
-                  <div className="aspect-[16/10] overflow-hidden" style={{ background: "var(--surface-2)" }}>
-                    {p.image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={p.image_url}
-                        alt={p.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-[var(--text-muted)] text-xs tracking-widest uppercase">Product</span>
-                      </div>
-                    )}
-                  </div>
+        //     <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        //       {featuredProducts.map((p) => (
+        //         <Link
+        //           key={p.id}
+        //           href={`/products/${p.slug}`}
+        //           className="card-lift group grad-border overflow-hidden flex flex-col"
+        //         >
+        //           <div className="aspect-[16/10] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+        //             {p.image_url ? (
+        //               // eslint-disable-next-line @next/next/no-img-element
+        //               <img
+        //                 src={p.image_url}
+        //                 alt={p.name}
+        //                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        //               />
+        //             ) : (
+        //               <div className="w-full h-full flex items-center justify-center">
+        //                 <span className="text-[var(--text-muted)] text-xs tracking-widest uppercase">Product</span>
+        //               </div>
+        //             )}
+        //           </div>
 
-                  <div className="flex flex-col flex-1 p-5">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <p className="text-xs text-[var(--gold)] opacity-80 tracking-wide">
-                        {p.category?.name || "Engineering"}
-                      </p>
-                      {p.sector_tag && (
-                        <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full border text-[var(--text-muted)]"
-                          style={{ borderColor: "var(--border)" }}>
-                          {p.sector_tag}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-semibold text-[var(--text)] leading-5 text-[0.95rem]">{p.name}</h3>
-                    {p.summary && (
-                      <p className="mt-3 text-sm text-[var(--text-dim)] line-clamp-2 leading-6 flex-1">{p.summary}</p>
-                    )}
-                    <div className="mt-4 pt-3 border-t flex items-center gap-2" style={{ borderColor: "var(--border)" }}>
-                      <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity">
-                        View Details →
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        //           <div className="flex flex-col flex-1 p-5">
+        //             <div className="flex items-start justify-between gap-2 mb-2">
+        //               <p className="text-xs text-[var(--gold)] opacity-80 tracking-wide">
+        //                 {p.category?.name || "Engineering"}
+        //               </p>
+        //               {p.sector_tag && (
+        //                 <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full border text-[var(--text-muted)]"
+        //                   style={{ borderColor: "var(--border)" }}>
+        //                   {p.sector_tag}
+        //                 </span>
+        //               )}
+        //             </div>
+        //             <h3 className="font-semibold text-[var(--text)] leading-5 text-[0.95rem]">{p.name}</h3>
+        //             {p.summary && (
+        //               <p className="mt-3 text-sm text-[var(--text-dim)] line-clamp-2 leading-6 flex-1">{p.summary}</p>
+        //             )}
+        //             <div className="mt-4 pt-3 border-t flex items-center gap-2" style={{ borderColor: "var(--border)" }}>
+        //               <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity">
+        //                 View Details →
+        //               </span>
+        //             </div>
+        //           </div>
+        //         </Link>
+        //       ))}
+        //     </div>
+        //   </div>
+        // </section>
+        <FeaturedProductsCarousel products={featuredProducts} />
       )}
 
       {/* ══════════════════════════════════════════════════
