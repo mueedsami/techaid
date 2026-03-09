@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/* Tell Tailwind v4 where to scan for utility classes */
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../lib/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../data/**/*.{js,ts,jsx,tsx,mdx}";
+
+/*
+  ✦ Global Theme Tokens ✦
+*/
+:root {
+  --bg:          #ffffff;
+  --surface:     #ffffff;
+  --surface-2:   #f6f7f9;
+  --surface-3:   #eef1f4;
+  --ink:         #0b1220;
+  --ink-2:       #ffffff;
+  --text:        #0b1220;
+  --text-dim:    rgba(11,18,32,0.72);
+  --text-muted:  rgba(11,18,32,0.54);
+  --border:      rgba(11,18,32,0.10);
+  --border-2:    rgba(11,18,32,0.16);
+  --gold:        #2563eb;
+  --gold-light:  #60a5fa;
+  --gold-dim:    #1d4ed8;
+  --gold-glow:   rgba(37,99,235,0.12);
+  --gold-border: rgba(37,99,235,0.22);
+  --on-gold:     #ffffff;
+  --nav-bg:      rgba(255,255,255,0.82);
+  --nav-shadow:  0 12px 40px rgba(11,18,32,0.08);
+  --shadow-sm:   0 10px 30px rgba(11,18,32,0.08);
+  --shadow-md:   0 18px 50px rgba(11,18,32,0.12);
+  --ring:        rgba(37,99,235,0.30);
+}
+
+/* ✅ minimal, safe reset */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+
+body {
+  position: relative; /* needed for predictable stacking with ::before */
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 { font-family: var(--font-serif), Georgia, serif; }
+
+/* Background noise layer */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+  ✅ Instead of forcing z-index on every direct child of body (which breaks fixed/sticky/overlays),
+  we only lift the main document sections above the noise layer.
+*/
+header, main, footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Utility fonts */
+.font-display { font-family: var(--font-serif), Georgia, serif; }
+
+/* Accent helpers */
+.gold-line {
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.hover-line {
+  position: relative;
+  display: inline-block;
+}
+.hover-line::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.35s cubic-bezier(.22,1,.36,1);
+}
+.hover-line:hover::after { width: 100%; }
+
+/* Focus ring */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+  border-radius: 12px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-8px) rotate(0.4deg); }
+  66%       { transform: translateY(-4px) rotate(-0.4deg); }
+}
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.anim-fade-up { animation: fadeUp 0.75s cubic-bezier(.22,1,.36,1) both; }
+.anim-fade-in { animation: fadeIn 0.65s ease both; }
+.anim-delay-1 { animation-delay: 0.08s; }
+.anim-delay-2 { animation-delay: 0.18s; }
+.anim-delay-3 { animation-delay: 0.30s; }
+.anim-delay-4 { animation-delay: 0.44s; }
+.anim-delay-5 { animation-delay: 0.58s; }
+.anim-delay-6 { animation-delay: 0.74s; }
+.anim-delay-7 { animation-delay: 0.90s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .anim-fade-up, .anim-fade-in, .marquee-track, .anim-float { animation: none !important; }
+  * { transition-duration: 0.001ms !important; }
+}
+
+.marquee-track { animation: marquee 35s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+
+.shimmer-gold {
+  background: linear-gradient(90deg,
+    var(--gold-dim) 0%,
+    var(--gold) 25%,
+    var(--gold-light) 50%,
+    var(--gold) 75%,
+    var(--gold-dim) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+
+.anim-float { animation: float 7s ease-in-out infinite; }
+
+.card-lift {
+  transition: transform 0.28s cubic-bezier(.22,1,.36,1),
+              box-shadow 0.28s ease,
+              border-color 0.28s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(37,99,235,0.10);
+  border-color: rgba(37,99,235,0.18) !important;
+}
+
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.grad-border {
+  position: relative;
+  background: var(--surface);
+  border-radius: 1rem;
+  border: 1px solid var(--border-2);
+}
+.grad-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(37,99,235,0.26),
+    rgba(11,18,32,0.06),
+    rgba(37,99,235,0.10));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(11,18,32,0.20); }
+
+/* Selection */
+::selection { background: var(--gold-glow); color: var(--ink); }
+
+
+/* =========================================================
+   Global spacing tuning (Option A)
+   Reduces excessive whitespace between sections + blocks
+   ========================================================= */
+
+/* Default vertical rhythm for all sections */
+section {
+  padding-top: clamp(2.5rem, 4vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 4vw, 4.5rem);
+}
+
+/* If some sections are “utility wrappers” and should not add spacing */
+section.section-compact {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* If you need a “big” feature section occasionally */
+section.section-spacious {
+  padding-top: clamp(3.5rem, 5vw, 6rem);
+  padding-bottom: clamp(3.5rem, 5vw, 6rem);
+}
+
+/* Tighten common text block spacing */
+section h1,
+section h2,
+section h3 {
+  margin-bottom: 0.75rem;
+}
+
+/* Stacking helpers: use these wrappers when you see big gaps */
+.stack-tight > * + * { margin-top: 0.75rem; }
+.stack-normal > * + * { margin-top: 1.25rem; }
+.stack-loose > * + * { margin-top: 2rem; }
