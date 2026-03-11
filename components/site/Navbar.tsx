@@ -86,6 +86,7 @@ export default function Navbar() {
   });
 
   return (
+    <>
     <header
       className="fixed top-0 left-0 right-0 z-50"
       style={{
@@ -277,9 +278,10 @@ export default function Navbar() {
         </button>
       </div>
 
+    </header>
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden absolute top-[64px] left-0 right-0 overflow-y-auto max-h-[80vh] shadow-2xl"
+        <div className="md:hidden fixed top-[64px] left-0 right-0 overflow-y-auto max-h-[80vh] shadow-2xl"
           style={{ background: "#ffffff", borderBottom: "1px solid var(--border)", zIndex: 9999 }}>
           <div className="px-4 py-3 space-y-1">
             <MobileLink href="/" label="Home" close={() => setMobileOpen(false)} active={isActive("/")} />
@@ -357,7 +359,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
