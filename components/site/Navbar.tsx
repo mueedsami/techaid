@@ -106,7 +106,7 @@ export default function Navbar() {
             style={{ borderColor: "var(--gold-border)" }}
           >
             <Image
-              src="/technical-aid-logo.png"
+              src="/Logo-size.jpg"
               alt="Technical Aid logo"
               width={42}
               height={42}
@@ -269,16 +269,18 @@ export default function Navbar() {
         <button
           onClick={() => setMobileOpen(v => !v)}
           className="md:hidden rounded-xl border px-3 py-1.5 text-sm"
-          style={{ borderColor: "var(--border)", color: "var(--text)", background: "transparent" }}
+          style={{ borderColor: "var(--border)", color: "var(--text)", background: "transparent", opacity: 1 }}
           aria-label="Toggle menu">
-          {mobileOpen ? "✕" : "☰"}
+          <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text)", opacity: 1 }}>
+            {mobileOpen ? "✕" : "☰"}
+          </span>
         </button>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden absolute top-[64px] left-0 right-0 overflow-y-auto max-h-[80vh] shadow-2xl"
-          style={{ background: "rgba(255,255,255,0.92)", borderBottom: "1px solid var(--border)", backdropFilter: "blur(14px)" }}>
+          style={{ background: "rgba(255,255,255,1)", borderBottom: "1px solid var(--border)", backdropFilter: "blur(14px)" }}>
           <div className="px-4 py-3 space-y-1">
             <MobileLink href="/" label="Home" close={() => setMobileOpen(false)} active={isActive("/")} />
 
