@@ -184,26 +184,7 @@ function getPublicApiBaseUrl() {
       ? DEVELOPMENT_PUBLIC_API_BASE_URL
       : PRODUCTION_PUBLIC_API_BASE_URL;
 
-  const resolved = normalizeBaseUrl(configured || fallback);
-
-  try {
-    const resolvedUrl = new URL(resolved);
-
-    if (
-      process.env.NODE_ENV === "production" &&
-      resolvedUrl.host.toLowerCase().endsWith(".vercel.app")
-    ) {
-      return PRODUCTION_PUBLIC_API_BASE_URL;
-    }
-
-    if (typeof window !== "undefined" && resolvedUrl.host === window.location.host) {
-      return PRODUCTION_PUBLIC_API_BASE_URL;
-    }
-  } catch {
-    return fallback;
-  }
-
-  return resolved;
+  return normalizeBaseUrl(configured || fallback);
 }
 
 

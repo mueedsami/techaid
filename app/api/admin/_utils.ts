@@ -33,38 +33,7 @@ export function getAdminPassword() {
 }
 
 export function getLaravelBaseUrl(req?: NextRequest) {
-  const configured = getConfiguredLaravelBaseUrl();
-
-  try {
-    const configuredUrl = new URL(configured);
-
-    if (req) {
-      const incomingUrl = new URL(req.url);
-      if (configuredUrl.host === incomingUrl.host) {
-        const fallbackUrl = new URL(PRODUCTION_LARAVEL_BASE_URL);
-        if (fallbackUrl.host !== incomingUrl.host) {
-          return normalizeBaseUrl(fallbackUrl.toString());
-        }
-
-        throw new Error(
-          `Laravel base URL resolves to the current frontend host (${incomingUrl.host}). ` +
-            `Set LARAVEL_API_BASE_URL or API_BASE_URL to the Laravel backend domain.`
-        );
-      }
-    }
-
-    if (
-      process.env.NODE_ENV === "production" &&
-      configuredUrl.host.toLowerCase().endsWith(".vercel.app")
-    ) {
-      return PRODUCTION_LARAVEL_BASE_URL;
-    }
-  } catch (error) {
-    if (error instanceof Error) throw error;
-    throw new Error("Invalid Laravel API base URL configuration.");
-  }
-
-  return configured;
+  return getConfiguredLaravelBaseUrl();
 }
 
 export function getAdminKey() {
