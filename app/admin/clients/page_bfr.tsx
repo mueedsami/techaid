@@ -113,9 +113,9 @@ export default function AdminClientsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search clients..."
-            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
-          <button onClick={load} className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-200">
+          <button onClick={load} className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm hover:bg-white/15">
             Search
           </button>
           <button
@@ -123,7 +123,7 @@ export default function AdminClientsPage() {
               setQ("");
               setTimeout(load, 0);
             }}
-            className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-100"
+            className="rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm hover:bg-white/10"
           >
             Reset
           </button>
@@ -137,11 +137,11 @@ export default function AdminClientsPage() {
         <div className="grid gap-3 md:grid-cols-2">
           <AdminInput label="Client Name" value={newItem.name} onChange={(v) => setNewItem({ ...newItem, name: v })} />
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Type</label>
+            <label className="mb-1 block text-xs text-white/60">Type</label>
             <select
               value={newItem.type}
               onChange={(e) => setNewItem({ ...newItem, type: e.target.value })}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             >
               {CLIENT_TYPES.map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -158,16 +158,16 @@ export default function AdminClientsPage() {
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">Summary</label>
+          <label className="mb-1 block text-xs text-white/60">Summary</label>
           <textarea
             value={newItem.summary}
             onChange={(e) => setNewItem({ ...newItem, summary: e.target.value })}
             rows={3}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
         </div>
 
-        <label className="mt-3 inline-flex items-center gap-2 text-sm text-gray-700">
+        <label className="mt-3 inline-flex items-center gap-2 text-sm text-white/80">
           <input
             type="checkbox"
             checked={newItem.is_active}
@@ -180,7 +180,7 @@ export default function AdminClientsPage() {
           <button
             onClick={createClient}
             disabled={creating}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm font-medium hover:bg-gray-200 disabled:opacity-60"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/15 disabled:opacity-60"
           >
             {creating ? "Adding..." : "Add Client"}
           </button>
@@ -189,9 +189,9 @@ export default function AdminClientsPage() {
 
       <AdminSectionCard title="Manage Clients">
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-white/60">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">No clients found.</p>
+          <p className="text-sm text-white/60">No clients found.</p>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
@@ -226,21 +226,21 @@ function ClientRow({
   useEffect(() => setDraft(item), [item]);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-sm font-medium">#{item.id}</p>
         <div className="flex items-center gap-2">
           <button
             onClick={() => onDelete(item.id)}
             disabled={saving}
-            className="rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-100 disabled:opacity-60"
+            className="rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-400/15 disabled:opacity-60"
           >
             Delete
           </button>
           <button
             onClick={() => onSave(item.id, draft)}
             disabled={saving}
-            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs hover:bg-gray-200 disabled:opacity-60"
+            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs hover:bg-white/15 disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save"}
           </button>
@@ -250,11 +250,11 @@ function ClientRow({
       <div className="grid gap-3 md:grid-cols-2">
         <AdminInput label="Name" value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Type</label>
+          <label className="mb-1 block text-xs text-white/60">Type</label>
           <select
             value={draft.type}
             onChange={(e) => setDraft({ ...draft, type: e.target.value })}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           >
             {CLIENT_TYPES.map((t) => (
               <option key={t} value={t}>{t}</option>
@@ -271,16 +271,16 @@ function ClientRow({
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">Summary</label>
+        <label className="mb-1 block text-xs text-white/60">Summary</label>
         <textarea
           value={draft.summary || ""}
           onChange={(e) => setDraft({ ...draft, summary: e.target.value })}
           rows={3}
-          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+          className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
         />
       </div>
 
-      <label className="mt-3 inline-flex items-center gap-2 text-sm text-gray-700">
+      <label className="mt-3 inline-flex items-center gap-2 text-sm text-white/80">
         <input
           type="checkbox"
           checked={!!draft.is_active}

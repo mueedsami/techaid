@@ -115,9 +115,9 @@ export default function AdminTestimonialsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search testimonials..."
-            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
-          <button onClick={load} className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-200">
+          <button onClick={load} className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm hover:bg-white/15">
             Search
           </button>
           <button
@@ -125,7 +125,7 @@ export default function AdminTestimonialsPage() {
               setQ("");
               setTimeout(load, 0);
             }}
-            className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-100"
+            className="rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm hover:bg-white/10"
           >
             Reset
           </button>
@@ -150,11 +150,11 @@ export default function AdminTestimonialsPage() {
 
         <div className="mt-3 grid gap-3 md:grid-cols-3">
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Rating</label>
+            <label className="mb-1 block text-xs text-white/60">Rating</label>
             <select
               value={newItem.rating}
               onChange={(e) => setNewItem({ ...newItem, rating: Number(e.target.value) })}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             >
               {[1, 2, 3, 4, 5].map((r) => (
                 <option key={r} value={r}>{r}</option>
@@ -162,7 +162,7 @@ export default function AdminTestimonialsPage() {
             </select>
           </div>
 
-          <label className="mt-6 inline-flex items-center gap-2 text-sm text-gray-700">
+          <label className="mt-6 inline-flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
               checked={newItem.is_featured}
@@ -171,7 +171,7 @@ export default function AdminTestimonialsPage() {
             Featured (homepage)
           </label>
 
-          <label className="mt-6 inline-flex items-center gap-2 text-sm text-gray-700">
+          <label className="mt-6 inline-flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
               checked={newItem.is_active}
@@ -182,12 +182,12 @@ export default function AdminTestimonialsPage() {
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">Quote</label>
+          <label className="mb-1 block text-xs text-white/60">Quote</label>
           <textarea
             value={newItem.quote}
             onChange={(e) => setNewItem({ ...newItem, quote: e.target.value })}
             rows={4}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
         </div>
 
@@ -195,7 +195,7 @@ export default function AdminTestimonialsPage() {
           <button
             onClick={createItem}
             disabled={creating}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm font-medium hover:bg-gray-200 disabled:opacity-60"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/15 disabled:opacity-60"
           >
             {creating ? "Adding..." : "Add Testimonial"}
           </button>
@@ -204,9 +204,9 @@ export default function AdminTestimonialsPage() {
 
       <AdminSectionCard title="Manage Testimonials">
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-white/60">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">No testimonials found.</p>
+          <p className="text-sm text-white/60">No testimonials found.</p>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
@@ -240,21 +240,21 @@ function TestimonialRow({
   useEffect(() => setDraft(item), [item]);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-sm font-medium">#{item.id}</p>
         <div className="flex items-center gap-2">
           <button
             onClick={() => onDelete(item.id)}
             disabled={saving}
-            className="rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-100 disabled:opacity-60"
+            className="rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-400/15 disabled:opacity-60"
           >
             Delete
           </button>
           <button
             onClick={() => onSave(item.id, draft)}
             disabled={saving}
-            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs hover:bg-gray-200 disabled:opacity-60"
+            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs hover:bg-white/15 disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save"}
           </button>
@@ -275,11 +275,11 @@ function TestimonialRow({
 
       <div className="mt-3 grid gap-3 md:grid-cols-3">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Rating</label>
+          <label className="mb-1 block text-xs text-white/60">Rating</label>
           <select
             value={draft.rating}
             onChange={(e) => setDraft({ ...draft, rating: Number(e.target.value) })}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           >
             {[1, 2, 3, 4, 5].map((r) => (
               <option key={r} value={r}>{r}</option>
@@ -287,7 +287,7 @@ function TestimonialRow({
           </select>
         </div>
 
-        <label className="mt-6 inline-flex items-center gap-2 text-sm text-gray-700">
+        <label className="mt-6 inline-flex items-center gap-2 text-sm text-white/80">
           <input
             type="checkbox"
             checked={!!draft.is_featured}
@@ -296,7 +296,7 @@ function TestimonialRow({
           Featured
         </label>
 
-        <label className="mt-6 inline-flex items-center gap-2 text-sm text-gray-700">
+        <label className="mt-6 inline-flex items-center gap-2 text-sm text-white/80">
           <input
             type="checkbox"
             checked={!!draft.is_active}
@@ -307,12 +307,12 @@ function TestimonialRow({
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">Quote</label>
+        <label className="mb-1 block text-xs text-white/60">Quote</label>
         <textarea
           value={draft.quote}
           onChange={(e) => setDraft({ ...draft, quote: e.target.value })}
           rows={4}
-          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+          className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
         />
       </div>
     </div>

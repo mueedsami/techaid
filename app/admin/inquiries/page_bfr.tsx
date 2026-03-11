@@ -76,13 +76,13 @@ export default function AdminInquiriesPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search by name, email, company, message..."
-            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
 
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as "" | InquiryStatus)}
-            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           >
             <option value="">All statuses</option>
             <option value="new">New</option>
@@ -92,7 +92,7 @@ export default function AdminInquiriesPage() {
 
           <button
             onClick={load}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-200"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm hover:bg-white/15"
           >
             Search
           </button>
@@ -103,7 +103,7 @@ export default function AdminInquiriesPage() {
               setStatus("");
               setTimeout(load, 0);
             }}
-            className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-100"
+            className="rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm hover:bg-white/10"
           >
             Reset
           </button>
@@ -114,7 +114,7 @@ export default function AdminInquiriesPage() {
             href={exportUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-gray-200"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/15"
           >
             Export CSV
           </a>
@@ -126,9 +126,9 @@ export default function AdminInquiriesPage() {
 
       <AdminSectionCard title="Manage Inquiries">
         {loading ? (
-          <p className="text-sm text-gray-500">Loading inquiries...</p>
+          <p className="text-sm text-white/60">Loading inquiries...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">No inquiries found.</p>
+          <p className="text-sm text-white/60">No inquiries found.</p>
         ) : (
           <div className="space-y-3">
             {items.map((inq) => (
@@ -168,13 +168,13 @@ function InquiryRow({
 
   const badgeClass =
     item.status === "closed"
-      ? "border-emerald-600/30 bg-emerald-50 text-emerald-700"
+      ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-200"
       : item.status === "contacted"
-      ? "border-blue-600/30 bg-blue-50 text-blue-700"
-      : "border-yellow-600/30 bg-yellow-50 text-yellow-700";
+      ? "border-blue-400/20 bg-blue-400/10 text-blue-200"
+      : "border-yellow-400/20 bg-yellow-400/10 text-yellow-200";
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       {/* top row */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
@@ -185,22 +185,22 @@ function InquiryRow({
             </span>
             <Link
               href={`/admin/inquiries/${item.id}`}
-              className="rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+              className="rounded-lg border border-white/10 bg-black/20 px-2 py-1 text-xs text-white/80 hover:bg-white/10"
             >
               Open
             </Link>
           </div>
 
-          <p className="mt-1 text-sm text-gray-900">
+          <p className="mt-1 text-sm text-white/90">
             {item.name} · {item.email}
             {item.phone ? ` · ${item.phone}` : ""}
           </p>
 
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-white/55">
             {item.company || "No company"} {item.service ? `· ${item.service}` : ""}
           </p>
 
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="mt-1 text-xs text-white/45">
             Submitted: {formatDt(item.created_at)}
           </p>
         </div>
@@ -211,7 +211,7 @@ function InquiryRow({
             onClick={() =>
               onSave(item.id, { status: draftStatus, admin_note: draftNote })
             }
-            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs hover:bg-gray-200 disabled:opacity-60"
+            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs hover:bg-white/15 disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save"}
           </button>
@@ -219,9 +219,9 @@ function InquiryRow({
       </div>
 
       {/* message preview */}
-      <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2">
-        <p className="text-xs text-gray-400">Message</p>
-        <p className="mt-1 line-clamp-3 text-sm leading-6 text-gray-700">
+      <div className="mt-3 rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+        <p className="text-xs text-white/50">Message</p>
+        <p className="mt-1 line-clamp-3 text-sm leading-6 text-white/80">
           {item.message}
         </p>
       </div>
@@ -229,11 +229,11 @@ function InquiryRow({
       {/* controls */}
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Status</label>
+          <label className="mb-1 block text-xs text-white/60">Status</label>
           <select
             value={draftStatus}
             onChange={(e) => setDraftStatus(e.target.value as InquiryStatus)}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           >
             <option value="new">New</option>
             <option value="contacted">Contacted</option>
@@ -242,13 +242,13 @@ function InquiryRow({
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Internal Note</label>
+          <label className="mb-1 block text-xs text-white/60">Internal Note</label>
           <textarea
             value={draftNote}
             onChange={(e) => setDraftNote(e.target.value)}
             rows={3}
             placeholder="Add follow-up note..."
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
           />
         </div>
       </div>

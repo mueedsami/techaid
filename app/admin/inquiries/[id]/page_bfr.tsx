@@ -58,9 +58,9 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
   }, [id]);
 
   const badgeClass = useMemo(() => {
-    if (status === "closed") return "border-emerald-600/30 bg-emerald-50 text-emerald-700";
-    if (status === "contacted") return "border-blue-600/30 bg-blue-50 text-blue-700";
-    return "border-yellow-600/30 bg-yellow-50 text-yellow-700";
+    if (status === "closed") return "border-emerald-400/20 bg-emerald-400/10 text-emerald-200";
+    if (status === "contacted") return "border-blue-400/20 bg-blue-400/10 text-blue-200";
+    return "border-yellow-400/20 bg-yellow-400/10 text-yellow-200";
   }, [status]);
 
   const onSave = async () => {
@@ -93,19 +93,19 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-white text-gray-900">
+    <main className="min-h-screen bg-black text-white">
       <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
         {/* Top bar */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Link
               href="/admin/inquiries"
-              className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2 text-sm hover:bg-gray-100"
+              className="rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm hover:bg-white/10"
             >
               ← Back to Inquiries
             </Link>
             {id && (
-              <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600">
+              <span className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70">
                 Inquiry #{id}
               </span>
             )}
@@ -121,7 +121,7 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
                 });
                 window.location.href = "/admin/login";
               }}
-              className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+              className="rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm font-medium hover:bg-white/10"
             >
               Logout
             </button>
@@ -140,25 +140,25 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
         )}
 
         {loading ? (
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-8 text-center text-sm text-gray-500">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center text-sm text-white/60">
             Loading inquiry details...
           </div>
         ) : !inquiry ? (
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-8 text-center text-sm text-gray-500">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center text-sm text-white/60">
             Inquiry not found.
           </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-12">
             {/* Left: Lead + Message */}
             <div className="space-y-6 lg:col-span-8">
-              <section className="rounded-3xl border border-gray-200 bg-gradient-to-b from-white/10 to-transparent p-6">
+              <section className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-transparent p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="text-sm text-gray-500">Lead</p>
+                    <p className="text-sm text-white/60">Lead</p>
                     <h1 className="mt-1 text-2xl font-semibold tracking-tight">
                       {inquiry.name}
                     </h1>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-white/60">
                       {inquiry.company || "No company provided"}
                     </p>
                   </div>
@@ -194,10 +194,10 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
                 </div>
               </section>
 
-              <section className="rounded-3xl border border-gray-200 bg-gray-50 p-6">
+              <section className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <h2 className="text-lg font-semibold">Message</h2>
-                <div className="mt-3 rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                  <p className="whitespace-pre-wrap text-sm leading-6 text-gray-900">
+                <div className="mt-3 rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <p className="whitespace-pre-wrap text-sm leading-6 text-white/85">
                     {inquiry.message}
                   </p>
                 </div>
@@ -206,19 +206,19 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
 
             {/* Right: Admin panel + metadata */}
             <div className="space-y-6 lg:col-span-4">
-              <section className="rounded-3xl border border-gray-200 bg-gray-50 p-6">
+              <section className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <h2 className="text-lg font-semibold">Admin Action</h2>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-white/60">
                   Update status and save follow-up notes.
                 </p>
 
                 <div className="mt-4 space-y-3">
                   <div>
-                    <label className="mb-1 block text-sm text-gray-700">Status</label>
+                    <label className="mb-1 block text-sm text-white/80">Status</label>
                     <select
                       value={status}
                       onChange={(e) => setStatus(e.target.value as InquiryStatus)}
-                      className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+                      className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
                     >
                       <option value="new">New</option>
                       <option value="contacted">Contacted</option>
@@ -227,27 +227,27 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
                   </div>
 
                   <div>
-                    <label className="mb-1 block text-sm text-gray-700">Internal Note</label>
+                    <label className="mb-1 block text-sm text-white/80">Internal Note</label>
                     <textarea
                       value={adminNote}
                       onChange={(e) => setAdminNote(e.target.value)}
                       rows={7}
                       placeholder="Add follow-up note, quote amount, next step, etc."
-                      className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+                      className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm outline-none focus:border-white/20"
                     />
                   </div>
 
                   <button
                     onClick={onSave}
                     disabled={saving}
-                    className="w-full rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm font-medium hover:bg-gray-200 disabled:opacity-60"
+                    className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/15 disabled:opacity-60"
                   >
                     {saving ? "Saving..." : "Save Changes"}
                   </button>
                 </div>
               </section>
 
-              <section className="rounded-3xl border border-gray-200 bg-gray-50 p-6">
+              <section className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <h2 className="text-lg font-semibold">Metadata</h2>
                 <div className="mt-4 space-y-3 text-sm">
                   <MetaRow label="ID" value={`#${inquiry.id}`} />
@@ -262,19 +262,19 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
                 </div>
               </section>
 
-              <section className="rounded-3xl border border-gray-200 bg-gradient-to-b from-white/10 to-transparent p-6">
+              <section className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-transparent p-6">
                 <h2 className="text-base font-semibold">Quick Actions</h2>
                 <div className="mt-4 grid gap-2">
                   <a
                     href={`mailto:${inquiry.email}`}
-                    className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm hover:bg-gray-100"
+                    className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm hover:bg-white/10"
                   >
                     Email Lead
                   </a>
                   {inquiry.phone && (
                     <a
                       href={`tel:${inquiry.phone}`}
-                      className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm hover:bg-gray-100"
+                      className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm hover:bg-white/10"
                     >
                       Call Lead
                     </a>
@@ -285,7 +285,7 @@ export default function AdminInquiryDetailsPage({ params }: Props) {
                         `Lead: ${inquiry.name}\nEmail: ${inquiry.email}\nPhone: ${inquiry.phone || "-"}\nService: ${inquiry.service || "-"}\n\nMessage:\n${inquiry.message}`
                       )
                     }
-                    className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-left text-sm hover:bg-gray-100"
+                    className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-left text-sm hover:bg-white/10"
                   >
                     Copy Full Lead Details
                   </button>
@@ -311,19 +311,19 @@ function QuickAction({
   onCopy?: () => void;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-      <p className="text-xs text-gray-400">{label}</p>
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+      <p className="text-xs text-white/50">{label}</p>
       {href ? (
-        <a href={href} className="mt-1 block text-sm text-gray-900 hover:text-gray-700 break-words">
+        <a href={href} className="mt-1 block text-sm text-white/90 hover:text-white break-words">
           {value}
         </a>
       ) : (
-        <p className="mt-1 text-sm text-gray-900 break-words">{value}</p>
+        <p className="mt-1 text-sm text-white/90 break-words">{value}</p>
       )}
       {onCopy && (
         <button
           onClick={onCopy}
-          className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-600 hover:bg-gray-100"
+          className="mt-2 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/70 hover:bg-white/10"
         >
           Copy
         </button>
@@ -342,9 +342,9 @@ function MetaRow({
   long?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2">
-      <p className="text-xs text-gray-400">{label}</p>
-      <p className={`mt-1 text-gray-900 ${long ? "break-words text-xs" : "text-sm"}`}>
+    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2">
+      <p className="text-xs text-white/50">{label}</p>
+      <p className={`mt-1 text-white/85 ${long ? "break-words text-xs" : "text-sm"}`}>
         {value}
       </p>
     </div>

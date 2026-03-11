@@ -154,11 +154,11 @@ export default function AdminProductsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search products..."
-            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           />
           <button
             onClick={load}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm"
           >
             Search
           </button>
@@ -167,7 +167,7 @@ export default function AdminProductsPage() {
               setQ("");
               setTimeout(load, 0);
             }}
-            className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2.5 text-sm"
+            className="rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm"
           >
             Reset
           </button>
@@ -180,11 +180,11 @@ export default function AdminProductsPage() {
       <AdminSectionCard title="Add New Product">
         <div className="grid gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Category</label>
+            <label className="mb-1 block text-xs text-white/60">Category</label>
             <select
               value={newItem.product_category_id}
               onChange={(e) => setNewItem({ ...newItem, product_category_id: e.target.value })}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             >
               <option value="">No category</option>
               {categories.map((c) => (
@@ -242,39 +242,39 @@ export default function AdminProductsPage() {
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">Summary</label>
+          <label className="mb-1 block text-xs text-white/60">Summary</label>
           <textarea
             value={newItem.summary}
             onChange={(e) => setNewItem({ ...newItem, summary: e.target.value })}
             rows={2}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           />
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">Description</label>
+          <label className="mb-1 block text-xs text-white/60">Description</label>
           <textarea
             value={newItem.description}
             onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
             rows={5}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           />
         </div>
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Key Features (one per line)</label>
+            <label className="mb-1 block text-xs text-white/60">Key Features (one per line)</label>
             <textarea
               value={newItem.key_features_text}
               onChange={(e) => setNewItem({ ...newItem, key_features_text: e.target.value })}
               rows={6}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
               placeholder={`Advanced digital interface\nData logging capability\nIndustrial-grade build`}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-xs text-gray-500">
+            <label className="mb-1 block text-xs text-white/60">
               Educational Objectives (one per line)
             </label>
             <textarea
@@ -283,27 +283,27 @@ export default function AdminProductsPage() {
                 setNewItem({ ...newItem, educational_objectives_text: e.target.value })
               }
               rows={6}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
               placeholder={`Calculate heat transfer rate\nDetermine effectiveness\nApply NTU method`}
             />
           </div>
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">
+          <label className="mb-1 block text-xs text-white/60">
             Technical Specs (one per line: Label: Value)
           </label>
           <textarea
             value={newItem.technical_specs_text}
             onChange={(e) => setNewItem({ ...newItem, technical_specs_text: e.target.value })}
             rows={5}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
             placeholder={`Power Supply: 220V AC\nDisplay: Digital PID\nMaterial: Stainless Steel fittings`}
           />
         </div>
 
         <div className="mt-3 flex flex-wrap gap-4">
-          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+          <label className="inline-flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
               checked={newItem.is_featured}
@@ -312,7 +312,7 @@ export default function AdminProductsPage() {
             Featured
           </label>
 
-          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+          <label className="inline-flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
               checked={newItem.is_active}
@@ -326,7 +326,7 @@ export default function AdminProductsPage() {
           <button
             onClick={createItem}
             disabled={creating}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm"
           >
             {creating ? "Adding..." : "Add Product"}
           </button>
@@ -335,9 +335,9 @@ export default function AdminProductsPage() {
 
       <AdminSectionCard title="Manage Products">
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-white/60">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">No products found.</p>
+          <p className="text-sm text-white/60">No products found.</p>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
@@ -412,11 +412,11 @@ function ProductRow({
   );
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       <div className="mb-3 flex items-center justify-between gap-2">
         <div>
           <p className="text-sm font-medium">#{item.id}</p>
-          <p className="text-xs text-gray-500">{item.name}</p>
+          <p className="text-xs text-white/55">{item.name}</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -429,7 +429,7 @@ function ProductRow({
           <button
             onClick={() => onSave(item.id, savePayload)}
             disabled={saving}
-            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs"
+            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs"
           >
             {saving ? "Saving..." : "Save"}
           </button>
@@ -438,7 +438,7 @@ function ProductRow({
 
       <div className="grid gap-3 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Category</label>
+          <label className="mb-1 block text-xs text-white/60">Category</label>
           <select
             value={draft.product_category_id || ""}
             onChange={(e) =>
@@ -447,7 +447,7 @@ function ProductRow({
                 product_category_id: e.target.value ? Number(e.target.value) : null,
               })
             }
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           >
             <option value="">No category</option>
             {categories.map((c) => (
@@ -471,38 +471,38 @@ function ProductRow({
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">Summary</label>
+        <label className="mb-1 block text-xs text-white/60">Summary</label>
         <textarea
           value={draft.summary || ""}
           onChange={(e) => setDraft({ ...draft, summary: e.target.value })}
           rows={2}
-          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+          className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
         />
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">Description</label>
+        <label className="mb-1 block text-xs text-white/60">Description</label>
         <textarea
           value={draft.description || ""}
           onChange={(e) => setDraft({ ...draft, description: e.target.value })}
           rows={4}
-          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+          className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
         />
       </div>
 
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Key Features (one per line)</label>
+          <label className="mb-1 block text-xs text-white/60">Key Features (one per line)</label>
           <textarea
             value={draft.key_features_text}
             onChange={(e) => setDraft({ ...draft, key_features_text: e.target.value })}
             rows={5}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">
+          <label className="mb-1 block text-xs text-white/60">
             Educational Objectives (one per line)
           </label>
           <textarea
@@ -511,25 +511,25 @@ function ProductRow({
               setDraft({ ...draft, educational_objectives_text: e.target.value })
             }
             rows={5}
-            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
           />
         </div>
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">
+        <label className="mb-1 block text-xs text-white/60">
           Technical Specs (Label: Value)
         </label>
         <textarea
           value={draft.technical_specs_text}
           onChange={(e) => setDraft({ ...draft, technical_specs_text: e.target.value })}
           rows={4}
-          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+          className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2.5 text-sm"
         />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-4">
-        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+        <label className="inline-flex items-center gap-2 text-sm text-white/80">
           <input
             type="checkbox"
             checked={!!draft.is_featured}
@@ -538,7 +538,7 @@ function ProductRow({
           Featured
         </label>
 
-        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+        <label className="inline-flex items-center gap-2 text-sm text-white/80">
           <input
             type="checkbox"
             checked={!!draft.is_active}

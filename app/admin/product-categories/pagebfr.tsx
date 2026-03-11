@@ -149,8 +149,8 @@ export default function AdminProductCategoriesPage() {
                 disabled={exists || creating}
                 className={`rounded-xl border px-3 py-2 text-sm ${
                   exists
-                    ? "border-emerald-600/30 bg-emerald-50 text-emerald-700"
-                    : "border-gray-300 bg-gray-100 text-gray-900 hover:bg-gray-200"
+                    ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-200"
+                    : "border-white/15 bg-white/10 text-white hover:bg-white/15"
                 }`}
               >
                 {exists ? `✓ ${cat}` : `+ ${cat}`}
@@ -158,7 +158,7 @@ export default function AdminProductCategoriesPage() {
             );
           })}
         </div>
-        <p className="mt-2 text-xs text-gray-500">
+        <p className="mt-2 text-xs text-white/55">
           One click to add your real catalog categories.
         </p>
       </AdminSectionCard>
@@ -175,7 +175,7 @@ export default function AdminProductCategoriesPage() {
           />
 
           <div className="flex items-end">
-            <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <label className="inline-flex items-center gap-2 text-sm text-white/80">
               <input
                 type="checkbox"
                 checked={isActive}
@@ -190,7 +190,7 @@ export default function AdminProductCategoriesPage() {
           <button
             onClick={createCategory}
             disabled={creating || !name.trim()}
-            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm"
+            className="rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm"
           >
             {creating ? "Adding..." : "Add Category"}
           </button>
@@ -199,9 +199,9 @@ export default function AdminProductCategoriesPage() {
 
       <AdminSectionCard title="Manage Categories">
         {loading ? (
-          <p className="text-sm text-gray-500">Loading...</p>
+          <p className="text-sm text-white/60">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">No categories yet.</p>
+          <p className="text-sm text-white/60">No categories yet.</p>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
@@ -238,11 +238,11 @@ function CategoryRow({
   }, [item]);
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <p className="text-sm font-medium">#{item.id}</p>
-          <p className="text-xs text-gray-500">{item.name}</p>
+          <p className="text-xs text-white/55">{item.name}</p>
         </div>
 
         <div className="flex gap-2">
@@ -263,7 +263,7 @@ function CategoryRow({
               })
             }
             disabled={saving}
-            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs"
+            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs"
           >
             {saving ? "Saving..." : "Save"}
           </button>
@@ -288,7 +288,7 @@ function CategoryRow({
           onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })}
         />
         <div className="flex items-end">
-          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+          <label className="inline-flex items-center gap-2 text-sm text-white/80">
             <input
               type="checkbox"
               checked={!!draft.is_active}
