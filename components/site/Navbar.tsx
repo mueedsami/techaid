@@ -280,7 +280,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden absolute top-[64px] left-0 right-0 overflow-y-auto max-h-[80vh] shadow-2xl"
-          style={{ background: "rgba(255,255,255,1)", borderBottom: "1px solid var(--border)", backdropFilter: "blur(14px)" }}>
+          style={{ background: "#ffffff", borderBottom: "1px solid var(--border)", zIndex: 9999 }}>
           <div className="px-4 py-3 space-y-1">
             <MobileLink href="/" label="Home" close={() => setMobileOpen(false)} active={isActive("/")} />
 
