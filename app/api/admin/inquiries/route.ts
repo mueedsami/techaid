@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAdminSession } from "../_utils";
+import { requireAdminSession, getLaravelBaseUrl, getAdminKey } from "../_utils";
 
-function getLaravelBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-}
 
-function getAdminKey() {
-  return process.env.CONTACT_ADMIN_KEY || "";
-}
 
 export async function GET(req: NextRequest) {
   const unauthorized = requireAdminSession(req);
@@ -23,7 +17,7 @@ export async function GET(req: NextRequest) {
     }
 
     const incoming = new URL(req.url);
-    const target = new URL(`${getLaravelBaseUrl()}/api/admin/inquiries`);
+    const target = new URL(`${getLaravelBaseUrl(req)}/api/admin/inquiries`);
     incoming.searchParams.forEach((v, k) => target.searchParams.set(k, v));
 
     const res = await fetch(target.toString(), {

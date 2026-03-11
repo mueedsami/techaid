@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAdminSession } from "../_utils";
+import { requireAdminSession, getLaravelBaseUrl, getAdminKey } from "../_utils";
 
-function getLaravelBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-}
-function getAdminKey() {
-  return process.env.CONTACT_ADMIN_KEY || "";
-}
 
 async function proxy(req: NextRequest, method: "GET" | "POST") {
   const unauthorized = requireAdminSession(req);
@@ -16,7 +10,7 @@ async function proxy(req: NextRequest, method: "GET" | "POST") {
   if (!key) return NextResponse.json({ ok: false, message: "Missing CONTACT_ADMIN_KEY" }, { status: 500 });
 
   const incoming = new URL(req.url);
-  const target = new URL(`${getLaravelBaseUrl()}/api/admin/testimonials`);
+  const target = new URL(`${getLaravelBaseUrl(req)}/api/admin/testimonials`);
   incoming.searchParams.forEach((v, k) => target.searchParams.set(k, v));
 
   const res = await fetch(target.toString(), {
