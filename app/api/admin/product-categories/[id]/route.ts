@@ -1,40 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAdminSession } from "../../_utils";
-
-const getLaravelBaseUrl = () => process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-const getAdminKey = () => process.env.CONTACT_ADMIN_KEY || "";
+import { getAdminKey, getLaravelBaseUrl, requireAdminSession } from "../../_utils";
 
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const unauthorized = requireAdminSession(req);
   if (unauthorized) return unauthorized;
 
-  const key = getAdminKey();
-  if (!key) return NextResponse.json({ ok: false, message: "Missing CONTACT_ADMIN_KEY" }, { status: 500 });
+  try {
+    const key = getAdminKey();
+    if (!key) return NextResponse.json({ ok: false, message: "Missing CONTACT_ADMIN_KEY" }, { status: 500 });
 
-  const { id } = await ctx.params;
-  const res = await fetch(`${getLaravelBaseUrl()}/api/admin/product-categories/${id}`, {
-    method: "PATCH",
-    headers: { Accept: "application/json", "Content-Type": "application/json", "X-Admin-Key": key },
-    body: JSON.stringify(await req.json()),
-  });
+    const { id } = await ctx.params;
+    const res = await fetch(`${getLaravelBaseUrl(req)}/api/admin/product-categories/${id}`, {
+      method: "PATCH",
+      headers: { Accept: "application/json", "Content-Type": "application/json", "X-Admin-Key": key },
+      body: JSON.stringify(await req.json()),
+      cache: "no-store",
+    });
 
-  const data = await res.json().catch(() => ({}));
-  return NextResponse.json(data, { status: res.status });
+    const data = await res.json().catch(() => ({}));
+    return NextResponse.json(data, { status: res.status });
+  } catch (e: any) {
+    return NextResponse.json({ ok: false, message: e?.message || "Proxy failed" }, { status: 500 });
+  }
 }
 
-export async function DELETE(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
-  const unauthorized = requireAdminSession(_req);
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const unauthorized = requireAdminSession(req);
   if (unauthorized) return unauthorized;
 
-  const key = getAdminKey();
-  if (!key) return NextResponse.json({ ok: false, message: "Missing CONTACT_ADMIN_KEY" }, { status: 500 });
+  try {
+    const key = getAdminKey();
+    if (!key) return NextResponse.json({ ok: false, message: "Missing CONTACT_ADMIN_KEY" }, { status: 500 });
 
-  const { id } = await ctx.params;
-  const res = await fetch(`${getLaravelBaseUrl()}/api/admin/product-categories/${id}`, {
-    method: "DELETE",
-    headers: { Accept: "application/json", "X-Admin-Key": key },
-  });
+    const { id } = await ctx.params;
+    const res = await fetch(`${getLaravelBaseUrl(req)}/api/admin/product-categories/${id}`, {
+      method: "DELETE",
+      headers: { Accept: "application/json", "X-Admin-Key": key },
+      cache: "no-store",
+    });
 
-  const data = await res.json().catch(() => ({}));
-  return NextResponse.json(data, { status: res.status });
+    const data = await res.json().catch(() => ({}));
+    return NextResponse.json(data, { status: res.status });
+  } catch (e: any) {
+    return NextResponse.json({ ok: false, message: e?.message || "Proxy failed" }, { status: 500 });
+  }
 }
