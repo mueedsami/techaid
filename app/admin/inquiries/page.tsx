@@ -52,7 +52,7 @@ export default function AdminInquiriesPage() {
 
   const updateRow = async (
     id: number,
-    payload: { status?: InquiryStatus; admin_note?: string }
+    payload: { status: InquiryStatus; admin_note?: string }
   ) => {
     setSavingId(id);
     setError("");
@@ -155,7 +155,7 @@ function InquiryRow({
   saving: boolean;
   onSave: (
     id: number,
-    payload: { status?: InquiryStatus; admin_note?: string }
+    payload: { status: InquiryStatus; admin_note?: string }
   ) => Promise<void>;
 }) {
   const [draftStatus, setDraftStatus] = useState<InquiryStatus>(item.status);
