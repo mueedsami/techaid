@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useMemo, useState } from "react";
 import AdminShell from "@/components/admin/AdminShell";
 import AdminSectionCard from "@/components/admin/AdminSectionCard";
@@ -81,9 +83,9 @@ export default function AdminProductsPage() {
         sector_tag: newItem.sector_tag || null,
         summary: newItem.summary || null,
         description: newItem.description || null,
-        key_features: newItem.key_features_text || null,
-        educational_objectives: newItem.educational_objectives_text || null,
-        technical_specs: newItem.technical_specs_text || null,
+        key_features: newItem.key_features_text ? newItem.key_features_text.split("\n").filter(Boolean) : undefined,
+        educational_objectives: newItem.educational_objectives_text ? newItem.educational_objectives_text.split("\n").filter(Boolean) : undefined,
+        technical_specs: newItem.technical_specs_text ? newItem.technical_specs_text.split("\n").filter(Boolean).map((l) => { const [label, ...rest] = l.split(":"); return { label: label.trim(), value: rest.join(":").trim() }; }) : undefined,
         sort_order: Number(newItem.sort_order || 0),
         is_featured: newItem.is_featured,
         is_active: newItem.is_active,
@@ -401,9 +403,9 @@ function ProductRow({
       sector_tag: draft.sector_tag || null,
       summary: draft.summary || null,
       description: draft.description || null,
-      key_features: draft.key_features_text || null,
-      educational_objectives: draft.educational_objectives_text || null,
-      technical_specs: draft.technical_specs_text || null,
+      key_features: draft.key_features_text ? draft.key_features_text.split("\n").filter(Boolean) : undefined,
+      educational_objectives: draft.educational_objectives_text ? draft.educational_objectives_text.split("\n").filter(Boolean) : undefined,
+      technical_specs: draft.technical_specs_text ? draft.technical_specs_text.split("\n").filter(Boolean).map((l) => { const [label, ...rest] = l.split(":"); return { label: label.trim(), value: rest.join(":").trim() }; }) : undefined,
       is_featured: !!draft.is_featured,
       is_active: !!draft.is_active,
       sort_order: Number(draft.sort_order || 0),

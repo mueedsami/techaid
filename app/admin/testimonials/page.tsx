@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import AdminShell from "@/components/admin/AdminShell";
 import AdminSectionCard from "@/components/admin/AdminSectionCard";

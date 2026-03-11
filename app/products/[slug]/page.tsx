@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchProductBySlug } from "@/lib/api";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductDetailsPage({
   params,
 }: {
@@ -9,12 +11,9 @@ export default async function ProductDetailsPage({
 }) {
   const { slug } = await params;
 
-  let data;
-  try {
-    data = await fetchProductBySlug(slug);
-  } catch {
-    notFound();
-  }
+  const data = await fetchProductBySlug(slug);
+
+  if (!data) notFound();
 
   const { product, related } = data;
 

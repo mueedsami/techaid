@@ -175,37 +175,33 @@ function getPublicApiBaseUrl() {
 }
 
 export async function fetchClients(params?: { type?: string }): Promise<ClientItem[]> {
-  const url = new URL(`${getPublicApiBaseUrl()}/api/clients`);
-  if (params?.type) url.searchParams.set("type", params.type);
-
-  const res = await fetch(url.toString(), {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 120 }, // ISR-friendly
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || "Failed to load clients");
-
-  return data?.data || [];
+  try {
+    const url = new URL(`${getPublicApiBaseUrl()}/api/clients`);
+    if (params?.type) url.searchParams.set("type", params.type);
+    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return data?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchTestimonials(params?: {
   featured?: boolean;
   limit?: number;
 }): Promise<TestimonialItem[]> {
-  const url = new URL(`${getPublicApiBaseUrl()}/api/testimonials`);
-  if (params?.featured) url.searchParams.set("featured", "1");
-  if (params?.limit) url.searchParams.set("limit", String(params.limit));
-
-  const res = await fetch(url.toString(), {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 120 },
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || "Failed to load testimonials");
-
-  return data?.data || [];
+  try {
+    const url = new URL(`${getPublicApiBaseUrl()}/api/testimonials`);
+    if (params?.featured) url.searchParams.set("featured", "1");
+    if (params?.limit) url.searchParams.set("limit", String(params.limit));
+    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return data?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 // ---------- Admin Content APIs (Clients + Testimonials) ----------
@@ -349,14 +345,14 @@ export type PublicProductDetails = PublicProductCard & {
 };
 
 export async function fetchProductCategories(): Promise<PublicProductCategory[]> {
-  const res = await fetch(`${getPublicApiBaseUrl()}/api/product-categories`, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 120 },
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || "Failed to load product categories");
-  return data?.data || [];
+  try {
+    const res = await fetch(`${getPublicApiBaseUrl()}/api/product-categories`, { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return data?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchProducts(params?: {
@@ -371,28 +367,28 @@ export async function fetchProducts(params?: {
   if (params?.featured) url.searchParams.set("featured", "1");
   if (params?.limit) url.searchParams.set("limit", String(params.limit));
 
-  const res = await fetch(url.toString(), {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 120 },
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || "Failed to load products");
-  return data?.data || [];
+  try {
+    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return data?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchProductBySlug(slug: string): Promise<{
   product: PublicProductDetails;
   related: PublicProductCard[];
-}> {
-  const res = await fetch(`${getPublicApiBaseUrl()}/api/products/${slug}`, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 120 },
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || "Failed to load product");
-  return data?.data;
+} | null> {
+  try {
+    const res = await fetch(`${getPublicApiBaseUrl()}/api/products/${slug}`, { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return null;
+    return data?.data;
+  } catch {
+    return null;
+  }
 }
 
 

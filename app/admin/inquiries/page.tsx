@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import AdminShell from "@/components/admin/AdminShell";
@@ -44,10 +46,11 @@ export default function AdminInquiriesPage() {
   }, []);
 
   const exportUrl = useMemo(() => {
-    const url = new URL("/api/admin/inquiries-export", window.location.origin);
+    const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+    const url = new URL("/api/admin/inquiries-export", origin);
     if (q.trim()) url.searchParams.set("q", q.trim());
     if (status) url.searchParams.set("status", status);
-    return url.toString();
+    return url.pathname + url.search;
   }, [q, status]);
 
   const updateRow = async (
