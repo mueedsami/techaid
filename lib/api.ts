@@ -170,9 +170,42 @@ export type TestimonialItem = {
   is_featured?: boolean;
 };
 
-function getPublicApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const PRODUCTION_PUBLIC_API_BASE_URL = "https://techaid.madestic.com";
+const DEVELOPMENT_PUBLIC_API_BASE_URL = "http://localhost:8000";
+
+function normalizeBaseUrl(value: string) {
+  return value.replace(/\/+$/, "");
 }
+
+function getPublicApiBaseUrl() {
+  const configured = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const fallback =
+    process.env.NODE_ENV === "development"
+      ? DEVELOPMENT_PUBLIC_API_BASE_URL
+      : PRODUCTION_PUBLIC_API_BASE_URL;
+
+  const resolved = normalizeBaseUrl(configured || fallback);
+
+  try {
+    const resolvedUrl = new URL(resolved);
+
+    if (
+      process.env.NODE_ENV === "production" &&
+      resolvedUrl.host.toLowerCase().endsWith(".vercel.app")
+    ) {
+      return PRODUCTION_PUBLIC_API_BASE_URL;
+    }
+
+    if (typeof window !== "undefined" && resolvedUrl.host === window.location.host) {
+      return PRODUCTION_PUBLIC_API_BASE_URL;
+    }
+  } catch {
+    return fallback;
+  }
+
+  return resolved;
+}
+
 
 export async function fetchClients(params?: { type?: string }): Promise<ClientItem[]> {
   try {
@@ -346,7 +379,10 @@ export type PublicProductDetails = PublicProductCard & {
 
 export async function fetchProductCategories(): Promise<PublicProductCategory[]> {
   try {
-    const res = await fetch(`${getPublicApiBaseUrl()}/api/product-categories`, { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const res = await fetch(`${getPublicApiBaseUrl()}/api/product-categories`, {
+  headers: { Accept: "application/json" },
+  cache: "no-store",
+});
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return [];
     return data?.data || [];
@@ -368,21 +404,36 @@ export async function fetchProducts(params?: {
   if (params?.limit) url.searchParams.set("limit", String(params.limit));
 
   try {
-    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const res = await fetch(url.toString(), {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    });
+
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return [];
+
+    if (!res.ok) {
+      console.error("fetchProducts failed:", res.status, data, "URL:", url.toString());
+      return [];
+    }
+
     return data?.data || [];
-  } catch {
+  } catch (error) {
+    console.error("fetchProducts crashed:", error, "URL:", url.toString());
     return [];
   }
 }
+
+
 
 export async function fetchProductBySlug(slug: string): Promise<{
   product: PublicProductDetails;
   related: PublicProductCard[];
 } | null> {
   try {
-    const res = await fetch(`${getPublicApiBaseUrl()}/api/products/${slug}`, { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const res = await fetch(`${getPublicApiBaseUrl()}/api/products/${slug}`, {
+  headers: { Accept: "application/json" },
+  cache: "no-store",
+});
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return null;
     return data?.data;
