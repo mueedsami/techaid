@@ -102,19 +102,14 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-3.5">
-          <div
-            className="overflow-hidden rounded-2xl border bg-white/80 p-1.5 shadow-[0_8px_26px_rgba(17,24,39,0.06)] transition-transform duration-300 group-hover:-translate-y-0.5"
-            style={{ borderColor: "var(--gold-border)" }}
-          >
-            <Image
-              src="/Logo-size.jpg"
-              alt="Technical Aid logo"
-              width={42}
-              height={42}
-              className="h-[42px] w-[42px] object-contain"
-              priority
-            />
-          </div>
+          <Image
+            src="/Logo-size.jpg"
+            alt="Technical Aid logo"
+            width={56}
+            height={56}
+            className="h-[56px] w-auto object-contain transition-transform duration-300 group-hover:-translate-y-0.5"
+            priority
+          />
           <div className="leading-none">
             <span className="font-display block text-[1.02rem] font-semibold tracking-[0.03em]" style={{ color: "var(--text)" }}>
               Technical Aid
