@@ -15,6 +15,7 @@ import {
   adminListProductCategories,
   adminListProducts,
   adminUpdateProduct,
+  adminUploadImage,
 } from "@/lib/api";
 
 export default function AdminProductsPage() {
@@ -24,6 +25,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -148,6 +150,26 @@ export default function AdminProductsPage() {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setError("");
+    try {
+      const res = await adminUploadImage(file);
+      if (res.ok && res.url) {
+        setNewItem({ ...newItem, image_url: res.url });
+        setSuccess("Image uploaded successfully.");
+      }
+    } catch (err: any) {
+      setError(err?.message || "Failed to upload image");
+    } finally {
+      setUploadingImage(false);
+      if (e.target) e.target.value = ""; // Reset input
+    }
+  };
+
   return (
     <AdminShell title="Products" activeTab="products">
       <AdminSectionCard>
@@ -234,12 +256,29 @@ export default function AdminProductsPage() {
             onChange={(v) => setNewItem({ ...newItem, sort_order: Number(v || 0) })}
           />
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 flex flex-col gap-2">
             <AdminInput
               label="Image URL"
               value={newItem.image_url}
               onChange={(v) => setNewItem({ ...newItem, image_url: v })}
             />
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                {uploadingImage ? "Uploading..." : "Upload Image"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+              {newItem.image_url && (
+                <div className="h-12 w-12 overflow-hidden rounded border border-gray-200">
+                  <img src={newItem.image_url} alt="Preview" className="h-full w-full object-cover" />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -381,6 +420,8 @@ function ProductRow({
       .join("\n"),
   });
 
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   useEffect(() => {
     setDraft({
       ...item,
@@ -467,8 +508,42 @@ function ProductRow({
         <AdminInput label="Sector Tag" value={draft.sector_tag || ""} onChange={(v) => setDraft({ ...draft, sector_tag: v })} />
         <AdminInput label="Sort Order" type="number" value={String(draft.sort_order || 0)} onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })} />
 
-        <div className="md:col-span-2">
-          <AdminInput label="Image URL" value={draft.image_url || ""} onChange={(v) => setDraft({ ...draft, image_url: v })} />
+        <div className="md:col-span-2 flex flex-col gap-2">
+            <AdminInput label="Image URL" value={draft.image_url || ""} onChange={(v) => setDraft({ ...draft, image_url: v })} />
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                {uploadingImage ? "Uploading..." : "Upload Image"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setUploadingImage(true);
+                    try {
+                      const res = await adminUploadImage(file);
+                      if (res.ok && res.url) {
+                        setDraft({ ...draft, image_url: res.url });
+                      } else {
+                        alert("Failed to upload image");
+                      }
+                    } catch (err: any) {
+                      alert(err?.message || "Failed to upload image");
+                    } finally {
+                      setUploadingImage(false);
+                      if (e.target) e.target.value = "";
+                    }
+                  }}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+              {draft.image_url && (
+                <div className="h-12 w-12 overflow-hidden rounded border border-gray-200 bg-white">
+                  <img src={draft.image_url} alt="Preview" className="h-full w-full object-cover" />
+                </div>
+              )}
+            </div>
         </div>
       </div>
 

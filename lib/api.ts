@@ -178,13 +178,8 @@ function normalizeBaseUrl(value: string) {
 }
 
 function getPublicApiBaseUrl() {
-  const configured = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
-  const fallback =
-    process.env.NODE_ENV === "development"
-      ? DEVELOPMENT_PUBLIC_API_BASE_URL
-      : PRODUCTION_PUBLIC_API_BASE_URL;
-
-  return normalizeBaseUrl(configured || fallback);
+  const configured = "https://techaid.madestic.com";
+  return configured;
 }
 
 
@@ -192,7 +187,10 @@ export async function fetchClients(params?: { type?: string }): Promise<ClientIt
   try {
     const url = new URL(`${getPublicApiBaseUrl()}/api/clients`);
     if (params?.type) url.searchParams.set("type", params.type);
-    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const res = await fetch(url.toString(), { 
+        headers: { Accept: "application/json", "Cache-Control": "no-store" }, 
+        cache: 'no-store' 
+    });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return [];
     return data?.data || [];
@@ -209,7 +207,10 @@ export async function fetchTestimonials(params?: {
     const url = new URL(`${getPublicApiBaseUrl()}/api/testimonials`);
     if (params?.featured) url.searchParams.set("featured", "1");
     if (params?.limit) url.searchParams.set("limit", String(params.limit));
-    const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, next: { revalidate: 120 } });
+    const res = await fetch(url.toString(), { 
+        headers: { Accept: "application/json", "Cache-Control": "no-store" }, 
+        cache: 'no-store' 
+    });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return [];
     return data?.data || [];
@@ -361,7 +362,7 @@ export type PublicProductDetails = PublicProductCard & {
 export async function fetchProductCategories(): Promise<PublicProductCategory[]> {
   try {
     const res = await fetch(`${getPublicApiBaseUrl()}/api/product-categories`, {
-  headers: { Accept: "application/json" },
+  headers: { Accept: "application/json", "Cache-Control": "no-store" },
   cache: "no-store",
 });
     const data = await res.json().catch(() => ({}));
@@ -386,7 +387,7 @@ export async function fetchProducts(params?: {
 
   try {
     const res = await fetch(url.toString(), {
-      headers: { Accept: "application/json" },
+      headers: { Accept: "application/json", "Cache-Control": "no-store" },
       cache: "no-store",
     });
 
@@ -412,7 +413,7 @@ export async function fetchProductBySlug(slug: string): Promise<{
 } | null> {
   try {
     const res = await fetch(`${getPublicApiBaseUrl()}/api/products/${slug}`, {
-  headers: { Accept: "application/json" },
+  headers: { Accept: "application/json", "Cache-Control": "no-store" },
   cache: "no-store",
 });
     const data = await res.json().catch(() => ({}));
@@ -540,7 +541,20 @@ export async function adminDeleteProduct(id: number) {
   return data;
 }
 
+export async function adminUploadImage(file: File): Promise<{ ok: boolean; url: string }> {
+  const formData = new FormData();
+  formData.append("image", file);
 
+  const res = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { Accept: "application/json" },
+    body: formData,
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || "Failed to upload image");
+  return data;
+}
 
 // I think things are getting broken here
 
