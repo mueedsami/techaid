@@ -20,6 +20,8 @@ export default function Navbar() {
 
   const [servicesOpen, setServicesOpen]     = useState(false);
   const [productsOpen, setProductsOpen]     = useState(false);
+  const [servicesPinned, setServicesPinned] = useState(false);
+  const [productsPinned, setProductsPinned] = useState(false);
   const [mobileOpen, setMobileOpen]         = useState(false);
   const [mobServices, setMobServices]       = useState(false);
   const [mobProducts, setMobProducts]       = useState(false);
@@ -45,7 +47,7 @@ export default function Navbar() {
     return () => { mounted = false; };
   }, []);
 
-    // Subtle elevation on scroll
+  // Subtle elevation on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -57,8 +59,14 @@ export default function Navbar() {
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       const t = e.target as Node;
-      if (servicesRef.current && !servicesRef.current.contains(t)) setServicesOpen(false);
-      if (productsRef.current && !productsRef.current.contains(t)) setProductsOpen(false);
+      if (servicesRef.current && !servicesRef.current.contains(t)) {
+        setServicesOpen(false);
+        setServicesPinned(false);
+      }
+      if (productsRef.current && !productsRef.current.contains(t)) {
+        setProductsOpen(false);
+        setProductsPinned(false);
+      }
     };
     window.addEventListener("mousedown", onDown);
     return () => window.removeEventListener("mousedown", onDown);
@@ -68,6 +76,8 @@ export default function Navbar() {
   useEffect(() => {
     setServicesOpen(false);
     setProductsOpen(false);
+    setServicesPinned(false);
+    setProductsPinned(false);
     setMobileOpen(false);
     setMobServices(false);
     setMobProducts(false);
@@ -129,9 +139,16 @@ export default function Navbar() {
           </Link>
 
           {/* Services dropdown */}
-          <div className="relative" ref={servicesRef}>
+          <div className="relative" ref={servicesRef} onMouseLeave={() => { if (!servicesPinned) setServicesOpen(false); }}>
             <button
-              onClick={() => { setServicesOpen(v => !v); setProductsOpen(false); }}
+              onClick={() => {
+                const nextPinned = !servicesPinned;
+                setServicesPinned(nextPinned);
+                setServicesOpen(nextPinned);
+                setProductsOpen(false);
+                setProductsPinned(false);
+              }}
+              onMouseEnter={() => setServicesOpen(true)}
               className="flex items-center gap-1 transition-colors"
               style={{ ...navLinkStyle("/services"), background: "none", border: "none", cursor: "pointer" }}
               onMouseOver={e => (e.currentTarget.style.color = "var(--text)")}
@@ -159,9 +176,15 @@ export default function Navbar() {
           </div>
 
           {/* Products mega dropdown */}
-          <div className="relative" ref={productsRef} onMouseLeave={() => setProductsOpen(false)}>
+          <div className="relative" ref={productsRef} onMouseLeave={() => { if (!productsPinned) setProductsOpen(false); }}>
             <button
-              onClick={() => { setProductsOpen(v => !v); setServicesOpen(false); }}
+              onClick={() => {
+                const nextPinned = !productsPinned;
+                setProductsPinned(nextPinned);
+                setProductsOpen(nextPinned);
+                setServicesOpen(false);
+                setServicesPinned(false);
+              }}
               onMouseEnter={() => setProductsOpen(true)}
               className="flex items-center gap-1 transition-colors"
               style={{ ...navLinkStyle("/products"), background: "none", border: "none", cursor: "pointer" }}
