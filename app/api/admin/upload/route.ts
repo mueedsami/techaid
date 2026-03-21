@@ -10,12 +10,18 @@ async function proxy(req: NextRequest, method: "POST") {
 
   const target = new URL(`${getLaravelBaseUrl(req)}/api/admin/upload`);
 
-  const formData = await req.formData();
+  const buffer = await req.arrayBuffer();
   
   const headers: Record<string, string> = {
     Accept: "application/json",
     "X-Admin-Key": key,
   };
+
+  const contentType = req.headers.get("content-type");
+  if (contentType) headers["Content-Type"] = contentType;
+
+  const contentLength = req.headers.get("content-length");
+  if (contentLength) headers["Content-Length"] = contentLength;
 
   const userAgent = req.headers.get("user-agent");
   if (userAgent) {
@@ -27,7 +33,7 @@ async function proxy(req: NextRequest, method: "POST") {
   const res = await fetch(target.toString(), {
     method,
     headers,
-    body: formData,
+    body: buffer,
     cache: "no-store",
   });
 
