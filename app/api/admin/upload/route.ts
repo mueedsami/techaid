@@ -30,6 +30,12 @@ async function proxy(req: NextRequest, method: "POST") {
     headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36";
   }
 
+  const origin = req.headers.get("origin");
+  if (origin) headers["Origin"] = origin;
+
+  const referer = req.headers.get("referer");
+  if (referer) headers["Referer"] = referer;
+
   const res = await fetch(target.toString(), {
     method,
     headers,

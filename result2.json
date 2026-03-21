@@ -1,0 +1,11 @@
+{
+  "accept_star": {
+    "error": "fetch failed"
+  },
+  "accept_multiple": {
+    "error": "fetch failed"
+  },
+  "fake_browser": {
+    "error": "fetch failed"
+  }
+}
