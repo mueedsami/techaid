@@ -581,3 +581,107 @@ export async function getProductCategoryTree(): Promise<PublicProductCategoryTre
   if (!res.ok) throw new Error(data?.message || "Failed to load product category tree");
   return data?.items || [];
 }
+
+// ---------- Blog APIs ----------
+
+export type PublicBlogCard = {
+  id: number;
+  title: string;
+  slug: string;
+  summary?: string | null;
+  image_url?: string | null;
+  published_at?: string | null;
+};
+
+export type PublicBlogDetails = PublicBlogCard & {
+  content: string;
+};
+
+export async function fetchBlogs(params?: { q?: string; limit?: number }): Promise<PublicBlogCard[]> {
+  try {
+    const url = new URL(`${getPublicApiBaseUrl()}/api/blogs`);
+    if (params?.q) url.searchParams.set("q", params.q);
+    if (params?.limit) url.searchParams.set("limit", String(params.limit));
+
+    const res = await fetch(url.toString(), {
+      headers: { Accept: "application/json", "Cache-Control": "no-store" },
+      cache: "no-store",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return [];
+    return data?.data || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchBlogBySlug(slug: string): Promise<{
+  blog: PublicBlogDetails;
+  related: PublicBlogCard[];
+} | null> {
+  try {
+    const res = await fetch(`${getPublicApiBaseUrl()}/api/blogs/${slug}`, {
+      headers: { Accept: "application/json", "Cache-Control": "no-store" },
+      cache: "no-store",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return null;
+    return data?.data;
+  } catch {
+    return null;
+  }
+}
+
+export type AdminBlog = {
+  id: number;
+  title: string;
+  slug: string;
+  summary?: string | null;
+  content: string;
+  image_url?: string | null;
+  is_active: boolean;
+  sort_order: number;
+  published_at?: string | null;
+};
+
+export async function adminListBlogs(q?: string): Promise<AdminBlog[]> {
+  const url = new URL("/api/admin/blogs", window.location.origin);
+  if (q) url.searchParams.set("q", q);
+
+  const res = await fetch(url.toString(), { headers: { Accept: "application/json" }, cache: "no-store" });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || "Failed to load blogs");
+  return data?.data || [];
+}
+
+export async function adminCreateBlog(payload: Partial<AdminBlog>) {
+  const res = await fetch("/api/admin/blogs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || "Failed to create blog");
+  return data;
+}
+
+export async function adminUpdateBlog(id: number, payload: Partial<AdminBlog>) {
+  const res = await fetch(`/api/admin/blogs/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || "Failed to update blog");
+  return data;
+}
+
+export async function adminDeleteBlog(id: number) {
+  const res = await fetch(`/api/admin/blogs/${id}`, {
+    method: "DELETE",
+    headers: { Accept: "application/json" },
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data?.message || "Failed to delete blog");
+  return data;
+}
