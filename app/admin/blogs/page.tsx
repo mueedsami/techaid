@@ -208,7 +208,32 @@ export default function AdminBlogsPage() {
         </div>
 
         <div className="mt-3">
-          <label className="mb-1 block text-xs text-gray-500">Body Content * (Markdown / Plain Text)</label>
+          <div className="mb-1 flex items-center justify-between">
+            <label className="text-xs text-gray-500">Body Content * (HTML / Plain Text)</label>
+            <label className="cursor-pointer text-xs text-[var(--gold)] hover:underline">
+              {uploadingImage ? "Uploading..." : "+ Insert Image/Video"}
+              <input type="file" accept="image/*,video/*" onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setUploadingImage(true);
+                try {
+                  const res = await adminUploadImage(file);
+                  if (res.ok && res.url) {
+                    const tag = file.type.startsWith('video/')
+                      ? `<video src="${res.url}" controls class="w-full rounded-xl my-4 aspect-video"></video>`
+                      : `<img src="${res.url}" alt="Blog Media" class="w-full rounded-xl my-4" />`;
+                    setNewItem((prev) => ({ ...prev, content: prev.content + "\n\n" + tag }));
+                    setSuccess("Media inserted into content.");
+                  }
+                } catch (err: any) {
+                  setError(err?.message || "Failed to upload media");
+                } finally {
+                  setUploadingImage(false);
+                  if (e.target) e.target.value = "";
+                }
+              }} disabled={uploadingImage} className="hidden" />
+            </label>
+          </div>
           <textarea
             value={newItem.content}
             onChange={(e) => setNewItem({ ...newItem, content: e.target.value })}
@@ -344,7 +369,31 @@ function BlogRow({
       </div>
 
       <div className="mt-3">
-        <label className="mb-1 block text-xs text-gray-500">Body Content</label>
+        <div className="mb-1 flex items-center justify-between">
+          <label className="text-xs text-gray-500">Body Content</label>
+          <label className="cursor-pointer text-xs text-[var(--gold)] hover:underline">
+            {uploadingImage ? "Uploading..." : "+ Insert Image/Video"}
+            <input type="file" accept="image/*,video/*" onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              setUploadingImage(true);
+              try {
+                const res = await adminUploadImage(file);
+                if (res.ok && res.url) {
+                  const tag = file.type.startsWith('video/')
+                    ? `<video src="${res.url}" controls class="w-full rounded-xl my-4 aspect-video"></video>`
+                    : `<img src="${res.url}" alt="Blog Media" class="w-full rounded-xl my-4" />`;
+                  setDraft((prev) => ({ ...prev, content: prev.content + "\n\n" + tag }));
+                }
+              } catch (err) {
+                console.error("Failed to upload media");
+              } finally {
+                setUploadingImage(false);
+                if (e.target) e.target.value = "";
+              }
+            }} disabled={uploadingImage} className="hidden" />
+          </label>
+        </div>
         <textarea value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} rows={6} className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm font-mono" />
       </div>
 

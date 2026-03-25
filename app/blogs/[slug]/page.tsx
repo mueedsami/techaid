@@ -52,9 +52,11 @@ export default async function BlogDetailsPage({
 
       {/* ─── CONTENT ─── */}
       <section className="px-6 sm:px-10 py-16">
-        <div className="mx-auto max-w-3xl prose prose-neutral prose-lg lg:prose-xl whitespace-pre-wrap" style={{ color: "var(--text)" }}>
-          {blog.content}
-        </div>
+        <div 
+          className="mx-auto max-w-3xl prose prose-neutral prose-lg lg:prose-xl whitespace-pre-wrap" 
+          style={{ color: "var(--text)" }}
+          dangerouslySetInnerHTML={{ __html: blog.content }}
+        />
       </section>
 
       {/* ─── RELATED ─── */}

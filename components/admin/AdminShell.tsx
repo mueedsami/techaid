@@ -8,7 +8,8 @@ type AdminTab =
   | "clients"
   | "testimonials"
   | "product-categories"
-  | "products";
+  | "products"
+  | "blogs";
 
 export default function AdminShell({
   title,
@@ -46,6 +47,7 @@ export default function AdminShell({
                 active={activeTab === "product-categories"}
               />
               <NavBtn href="/admin/products" label="Products" active={activeTab === "products"} />
+              <NavBtn href="/admin/blogs" label="Blogs" active={activeTab === "blogs"} />
 
               <button
                 onClick={async () => {
