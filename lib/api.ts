@@ -344,6 +344,7 @@ export type PublicProductCard = {
   slug: string;
   short_title?: string | null;
   image_url?: string | null;
+  gallery_images?: string[];
   sector_tag?: string | null;
   summary?: string | null;
   is_featured?: boolean;

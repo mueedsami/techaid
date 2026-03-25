@@ -365,8 +365,17 @@ function ProductCard({ p, delay, visible }: { p: PublicProductCard; delay: numbe
       }}>
       <div className="aspect-[16/10] overflow-hidden relative" style={{ background: "var(--surface-3)" }}>
         {p.image_url ? (
-          <img src={p.image_url} alt={p.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <>
+            <img src={p.image_url} alt={p.name}
+              className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 group-hover:scale-[1.05] ${p.gallery_images && p.gallery_images.length > 0 ? "group-hover:opacity-0" : ""}`} />
+            {p.gallery_images && p.gallery_images.length > 0 && (
+              <img
+                src={p.gallery_images[0]}
+                alt={`${p.name} Alternate`}
+                className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-500 group-hover:scale-[1.05] group-hover:opacity-100"
+              />
+            )}
+          </>
         ) : (
           <div className="h-full w-full flex items-center justify-center">
             <span className="font-display text-5xl font-medium" style={{ color: "var(--border-2)" }}>TA</span>

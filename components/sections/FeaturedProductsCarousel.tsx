@@ -98,14 +98,22 @@ export default function FeaturedProductsCarousel({ products }: Props) {
               }}
             >
               <div className="absolute inset-x-8 top-0 h-px opacity-70" style={{ background: "linear-gradient(to right, transparent, var(--gold-border), transparent)" }} />
-              <div className="aspect-[16/10] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+              <div className="aspect-[16/10] overflow-hidden relative" style={{ background: "var(--surface-2)" }}>
                 {p.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image_url}
-                    alt={p.name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                  />
+                  <>
+                    <img
+                      src={p.image_url}
+                      alt={p.name}
+                      className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 group-hover:scale-[1.05] ${p.gallery_images && p.gallery_images.length > 0 ? "group-hover:opacity-0" : ""}`}
+                    />
+                    {p.gallery_images && p.gallery_images.length > 0 && (
+                      <img
+                        src={p.gallery_images[0]}
+                        alt={`${p.name} Alternate`}
+                        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 group-hover:scale-[1.05] group-hover:opacity-100"
+                      />
+                    )}
+                  </>
                 ) : (
                   <div className="flex h-full items-center justify-center">
                     <div className="rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.3em]" style={{ borderColor: "var(--gold-border)", color: "var(--gold)" }}>

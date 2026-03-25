@@ -130,14 +130,22 @@ export default async function ProductsPage({
                     href={`/products/${p.slug}`}
                     className="card-lift group grad-border overflow-hidden flex flex-col"
                   >
-                    <div className="aspect-[16/10] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+                    <div className="aspect-[16/10] overflow-hidden relative" style={{ background: "var(--surface-2)" }}>
                       {p.image_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={p.image_url}
-                          alt={p.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                        />
+                        <>
+                          <img
+                            src={p.image_url}
+                            alt={p.name}
+                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.04] ${p.gallery_images && p.gallery_images.length > 0 ? "group-hover:opacity-0" : ""}`}
+                          />
+                          {p.gallery_images && p.gallery_images.length > 0 && (
+                            <img
+                              src={p.gallery_images[0]}
+                              alt={`${p.name} Alternate`}
+                              className="absolute inset-0 w-full h-full object-cover opacity-0 transition-all duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
+                            />
+                          )}
+                        </>
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <span className="text-[var(--text-muted)] text-xs tracking-widest uppercase">Product Image</span>
