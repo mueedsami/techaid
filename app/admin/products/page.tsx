@@ -45,6 +45,7 @@ export default function AdminProductsPage() {
     sort_order: 0,
     is_featured: true,
     is_active: true,
+    gallery_images: [] as string[],
   });
 
   const load = async () => {
@@ -88,6 +89,7 @@ export default function AdminProductsPage() {
         key_features: newItem.key_features_text ? newItem.key_features_text.split("\n").filter(Boolean) : undefined,
         educational_objectives: newItem.educational_objectives_text ? newItem.educational_objectives_text.split("\n").filter(Boolean) : undefined,
         technical_specs: newItem.technical_specs_text ? newItem.technical_specs_text.split("\n").filter(Boolean).map((l) => { const [label, ...rest] = l.split(":"); return { label: label.trim(), value: rest.join(":").trim() }; }) : undefined,
+        gallery_images: newItem.gallery_images.length > 0 ? newItem.gallery_images : undefined,
         sort_order: Number(newItem.sort_order || 0),
         is_featured: newItem.is_featured,
         is_active: newItem.is_active,
@@ -110,6 +112,7 @@ export default function AdminProductsPage() {
         sort_order: 0,
         is_featured: true,
         is_active: true,
+        gallery_images: [],
       });
       await load();
     } catch (e: any) {
@@ -280,6 +283,53 @@ export default function AdminProductsPage() {
               )}
             </div>
           </div>
+
+          <div className="md:col-span-2 mt-4">
+            <label className="mb-2 block text-sm font-medium text-gray-700">Gallery Images</label>
+            <div className="flex flex-wrap items-center gap-4">
+              {newItem.gallery_images.map((url, i) => (
+                <div key={i} className="relative group h-24 w-24 overflow-hidden rounded-xl border border-gray-200 bg-white">
+                  <img src={url} alt={`Gallery ${i}`} className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setNewItem({ ...newItem, gallery_images: newItem.gallery_images.filter((_, index) => index !== i) })}
+                    className="absolute top-1 right-1 hidden group-hover:flex items-center justify-center rounded-full bg-red-500/90 h-6 w-6 text-white hover:bg-red-600 shadow-sm"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              ))}
+              <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:border-gray-400 p-2 text-center text-sm transition-colors">
+                {uploadingImage ? "..." : "+ Add"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={async (e) => {
+                    const files = e.target.files;
+                    if (!files?.length) return;
+                    setUploadingImage(true);
+                    try {
+                      const newUrls = [...newItem.gallery_images];
+                      for (let i = 0; i < files.length; i++) {
+                        const res = await adminUploadImage(files[i]);
+                        if (res.ok && res.url) newUrls.push(res.url);
+                      }
+                      setNewItem({ ...newItem, gallery_images: newUrls });
+                      setSuccess("Gallery images uploaded.");
+                    } catch (err: any) {
+                      setError(err?.message || "Failed to upload");
+                    } finally {
+                      setUploadingImage(false);
+                      if (e.target) e.target.value = "";
+                    }
+                  }}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
         </div>
 
         <div className="mt-3">
@@ -413,6 +463,7 @@ function ProductRow({
 }) {
   const [draft, setDraft] = useState({
     ...item,
+    gallery_images: item.gallery_images || [],
     key_features_text: (item.key_features || []).join("\n"),
     educational_objectives_text: (item.educational_objectives || []).join("\n"),
     technical_specs_text: (item.technical_specs || [])
@@ -425,6 +476,7 @@ function ProductRow({
   useEffect(() => {
     setDraft({
       ...item,
+      gallery_images: item.gallery_images || [],
       key_features_text: (item.key_features || []).join("\n"),
       educational_objectives_text: (item.educational_objectives || []).join("\n"),
       technical_specs_text: (item.technical_specs || [])
@@ -447,6 +499,7 @@ function ProductRow({
       key_features: draft.key_features_text ? draft.key_features_text.split("\n").filter(Boolean) : undefined,
       educational_objectives: draft.educational_objectives_text ? draft.educational_objectives_text.split("\n").filter(Boolean) : undefined,
       technical_specs: draft.technical_specs_text ? draft.technical_specs_text.split("\n").filter(Boolean).map((l) => { const [label, ...rest] = l.split(":"); return { label: label.trim(), value: rest.join(":").trim() }; }) : undefined,
+      gallery_images: draft.gallery_images.length > 0 ? draft.gallery_images : [],
       is_featured: !!draft.is_featured,
       is_active: !!draft.is_active,
       sort_order: Number(draft.sort_order || 0),
@@ -544,8 +597,54 @@ function ProductRow({
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="md:col-span-2 mt-4 text-left">
+            <label className="mb-2 block text-sm font-medium text-gray-700">Gallery Images</label>
+            <div className="flex flex-wrap items-center gap-4">
+              {draft.gallery_images.map((url, i) => (
+                <div key={i} className="relative group h-24 w-24 overflow-hidden rounded-xl border border-gray-200 bg-white">
+                  <img src={url} alt={`Gallery ${i}`} className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setDraft({ ...draft, gallery_images: draft.gallery_images.filter((_, index) => index !== i) })}
+                    className="absolute top-1 right-1 hidden group-hover:flex items-center justify-center rounded-full bg-red-500/90 h-6 w-6 text-white hover:bg-red-600 shadow-sm"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+              ))}
+              <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:border-gray-400 p-2 text-center text-sm transition-colors">
+                {uploadingImage ? "..." : "+ Add"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={async (e) => {
+                    const files = e.target.files;
+                    if (!files?.length) return;
+                    setUploadingImage(true);
+                    try {
+                      const newUrls = [...draft.gallery_images];
+                      for (let i = 0; i < files.length; i++) {
+                        const res = await adminUploadImage(files[i]);
+                        if (res.ok && res.url) newUrls.push(res.url);
+                      }
+                      setDraft({ ...draft, gallery_images: newUrls });
+                    } catch (err: any) {
+                      alert(err?.message || "Failed to upload image");
+                    } finally {
+                      setUploadingImage(false);
+                      if (e.target) e.target.value = "";
+                    }
+                  }}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
 
       <div className="mt-3">
         <label className="mb-1 block text-xs text-gray-500">Summary</label>
