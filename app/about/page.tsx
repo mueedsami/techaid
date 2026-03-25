@@ -29,13 +29,7 @@ const values = [
   },
 ];
 
-const timeline = [
-  { year: "2018", event: "Founded in Dhaka by a group of professional engineers" },
-  { year: "2019", event: "First major university laboratory equipment contracts" },
-  { year: "2021", event: "Expanded into industrial power and substation solutions" },
-  { year: "2023", event: "Launched hands-on automation and PLC training programs" },
-  { year: "2024", event: "Serving 200+ clients across education and industry sectors" },
-];
+// Removed timeline
 
 export default function AboutPage() {
   return (
@@ -120,34 +114,35 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── TIMELINE ─── */}
+      {/* ─── OUR WORKFLOW ─── */}
       <section className="px-6 sm:px-10 py-24">
         <div className="mx-auto max-w-7xl">
-          <span className="gold-line" />
-          <h2 className="font-display text-3xl font-semibold tracking-tight mb-16">Our Journey</h2>
-
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-[2.5rem] top-0 bottom-0 w-px hidden md:block"
-              style={{ background: "linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1))" }} />
-
-            <div className="space-y-6">
-              {timeline.map((item, i) => (
-                <div key={item.year} className="relative flex gap-6 md:gap-12 items-start">
-                  {/* Year node */}
-                  <div className="relative z-10 flex-shrink-0 w-20 h-10 rounded-xl flex items-center justify-center border text-xs font-mono font-semibold"
-                    style={{
-                      background: i === timeline.length - 1 ? "var(--gold)" : "var(--surface-2)",
-                      borderColor: i === timeline.length - 1 ? "var(--gold)" : "var(--border-2)",
-                      color: i === timeline.length - 1 ? "var(--ink)" : "var(--gold)",
-                    }}>
-                    {item.year}
-                  </div>
-                  <div className="grad-border flex-1 px-5 py-4">
-                    <p className="text-sm text-[var(--text-dim)]">{item.event}</p>
-                  </div>
+          <div className="grad-border p-8 md:p-12 relative overflow-hidden">
+            <div className="pointer-events-none absolute inset-0">
+              <div className="glow-blob w-[400px] h-[400px] bg-[var(--gold)] opacity-[0.03] top-[-20%] right-[-10%]" />
+            </div>
+            <div className="relative z-10">
+              <span className="gold-line" />
+              <h2 className="font-display text-3xl font-semibold tracking-tight mb-8">Our Workflow</h2>
+              
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="space-y-4 text-[var(--text-dim)] leading-7 text-sm">
+                  <p>
+                    We believe the right solution is not just about supplying equipment. It is about understanding the application requirement and delivering an optimized, reliable, and cost-effective result.
+                  </p>
+                  <p>
+                    At Technical Aid, our workflow is designed to ensure precision, reliability, and complete client satisfaction. We begin with a comprehensive consultation to understand your unique engineering and educational needs.
+                  </p>
                 </div>
-              ))}
+                <div className="space-y-4 text-[var(--text-dim)] leading-7 text-sm">
+                  <p>
+                    From there, our expert team develops tailored solutions, whether it involves local manufacturing or sourcing high-quality equipment globally. We handle every aspect of the project lifecycle.
+                  </p>
+                  <p>
+                    This includes systematic installation, rigorous testing, and hands-on demonstration to ensure seamless integration. Our commitment doesn't end at delivery—we provide ongoing after-sales support, maintenance, and training.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -175,18 +170,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── HOW WE WORK + VALUES ─── */}
+      {/* ─── WHO WE SERVE & VALUES ─── */}
       <section className="px-6 sm:px-10 py-24">
         <div className="mx-auto max-w-7xl grid gap-8 md:grid-cols-2">
           <div className="grad-border p-8 md:p-10">
             <span className="gold-line" />
-            <h2 className="font-display text-2xl font-semibold tracking-tight mb-6">How We Work</h2>
+            <h2 className="font-display text-2xl font-semibold tracking-tight mb-6">Who We Serve</h2>
             <div className="space-y-4 text-[var(--text-dim)] text-sm leading-7">
               <p>
-                We work closely with government organizations, autonomous bodies, private industries, universities, and technical institutes. Our team provides complete technical consultancy—from product selection and system design to installation, demonstration, and after-sales support.
+                Technical Aid is a trusted partner for a wide spectrum of organizations. We work closely with government organizations, autonomous bodies, private industries, universities, and technical institutes across Bangladesh.
               </p>
               <p>
-                We believe the right solution is not just about supplying equipment. It is about understanding the application requirement and delivering an optimized, reliable, and cost-effective result.
+                Our solutions cater precisely to the distinct demands of both the educational and industrial sectors. For educational institutions, we provide state-of-the-art laboratory and training equipment. For industries, we deliver robust automation solutions, power systems, and specialized engineering services. By bridging the gap between academic learning and industrial application, we empower our clients to achieve their technical objectives efficiently.
               </p>
             </div>
           </div>
