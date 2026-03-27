@@ -204,6 +204,7 @@ export default function Navbar() {
                       <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Browse our comprehensive range of engineering solutions</span>
                     </div>
                     <Link href="/products"
+                      onClick={() => { setProductsOpen(false); setProductsPinned(false); }}
                       className="rounded-full px-4 py-1.5 text-xs font-semibold transition-colors"
                       style={{ background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" }}
                       onMouseOver={e => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--gold)"; }}
@@ -221,6 +222,7 @@ export default function Navbar() {
                       {productCats.map((cat) => (
                         <div key={cat.id} className="flex flex-col">
                           <Link href={`/products?category=${cat.slug}`}
+                            onClick={() => { setProductsOpen(false); setProductsPinned(false); }}
                             className="text-sm font-semibold mb-2 transition-colors hover:underline"
                             style={{ color: "var(--text)" }}
                             onMouseOver={e => e.currentTarget.style.color = "var(--gold)"}
@@ -231,6 +233,7 @@ export default function Navbar() {
                             <div className="flex flex-col gap-1.5 border-l-2 pl-2.5 ml-1" style={{ borderColor: "var(--surface-2)" }}>
                               {cat.children.map((sub) => (
                                 <Link key={sub.id} href={`/products?category=${sub.slug}`}
+                                  onClick={() => { setProductsOpen(false); setProductsPinned(false); }}
                                   className="text-[13px] transition-colors"
                                   style={{ color: "var(--text-dim)" }}
                                   onMouseOver={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.textDecoration = "underline"; }}
