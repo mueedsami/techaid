@@ -192,74 +192,58 @@ export default function Navbar() {
               onMouseOut={e => (e.currentTarget.style.color = isActive("/products") ? "var(--text)" : "var(--text-dim)")}
             >
               Products
-              <span style={{ fontSize: "0.5rem", opacity: 0.5 }}>▾</span>
+              <span style={{ fontSize: "0.5rem", opacity: 0.5, transition: "transform 0.2s", transform: productsOpen ? "rotate(180deg)" : "none" }}>▾</span>
             </button>
             {productsOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-[680px] rounded-2xl overflow-hidden shadow-2xl"
+              <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-max min-w-[600px] max-w-[800px] rounded-2xl shadow-2xl transition-all"
                 style={{ background: "var(--surface-3)", border: "1px solid var(--border)" }}>
-                <div className="grid grid-cols-[220px_1fr]">
-                  <div className="p-2" style={{ borderRight: "1px solid var(--border)", background: "var(--surface-2)" }}>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4 pb-3" style={{ borderBottom: "1px solid var(--border)" }}>
+                    <div className="flex flex-col">
+                      <span className="text-base font-semibold" style={{ color: "var(--text)" }}>Our Products</span>
+                      <span className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Browse our comprehensive range of engineering solutions</span>
+                    </div>
                     <Link href="/products"
-                      className="mb-2 block rounded-xl border px-3 py-2 text-xs font-medium"
-                      style={{ borderColor: "var(--border)", color: "var(--text)", background: "var(--surface-3)" }}>
+                      className="rounded-full px-4 py-1.5 text-xs font-semibold transition-colors"
+                      style={{ background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" }}
+                      onMouseOver={e => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--gold)"; }}
+                      onMouseOut={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}>
                       View All Products
                     </Link>
-                    {catsLoading ? (
-                      <p className="px-3 py-2 text-xs" style={{ color: "var(--text-muted)" }}>Loading...</p>
-                    ) : productCats.length === 0 ? (
-                      <p className="px-3 py-2 text-xs" style={{ color: "var(--text-muted)" }}>No categories</p>
-                    ) : (
-                      productCats.map((cat) => (
-                        <button key={cat.id} type="button"
-                          onMouseEnter={() => setActiveCat(cat.id)}
-                          onClick={() => setActiveCat(cat.id)}
-                          className="mb-0.5 block w-full rounded-xl px-3 py-2 text-left text-xs transition-all"
-                          style={{
-                            background: activeCat === cat.id ? "var(--surface-3)" : "transparent",
-                            color: activeCat === cat.id ? "var(--text)" : "var(--text-dim)",
-                            borderLeft: activeCat === cat.id ? "2px solid var(--gold)" : "2px solid transparent",
-                          }}>
-                          {cat.name}
-                        </button>
-                      ))
-                    )}
                   </div>
-                  <div className="p-4">
-                    {!activeParent ? (
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>No categories found.</p>
-                    ) : (
-                      <>
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-xs font-semibold">{activeParent.name}</h3>
-                          <Link href={`/products?category=${activeParent.slug}`}
-                            className="text-[10px] hover-line" style={{ color: "var(--gold)" }}>
-                            View all →
+                  
+                  {catsLoading ? (
+                    <p className="py-4 text-center text-sm" style={{ color: "var(--text-muted)" }}>Loading categories...</p>
+                  ) : productCats.length === 0 ? (
+                    <p className="py-4 text-center text-sm" style={{ color: "var(--text-muted)" }}>No categories available.</p>
+                  ) : (
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 max-h-[60vh] overflow-y-auto custom-scrollbar p-1">
+                      {productCats.map((cat) => (
+                        <div key={cat.id} className="flex flex-col">
+                          <Link href={`/products?category=${cat.slug}`}
+                            className="text-sm font-semibold mb-2 transition-colors hover:underline"
+                            style={{ color: "var(--text)" }}
+                            onMouseOver={e => e.currentTarget.style.color = "var(--gold)"}
+                            onMouseOut={e => e.currentTarget.style.color = "var(--text)"}>
+                            {cat.name}
                           </Link>
+                          {cat.children && cat.children.length > 0 && (
+                            <div className="flex flex-col gap-1.5 border-l-2 pl-2.5 ml-1" style={{ borderColor: "var(--surface-2)" }}>
+                              {cat.children.map((sub) => (
+                                <Link key={sub.id} href={`/products?category=${sub.slug}`}
+                                  className="text-[13px] transition-colors"
+                                  style={{ color: "var(--text-dim)" }}
+                                  onMouseOver={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.textDecoration = "underline"; }}
+                                  onMouseOut={e => { e.currentTarget.style.color = "var(--text-dim)"; e.currentTarget.style.textDecoration = "none"; }}>
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        {activeParent.children?.length ? (
-                          <div className="grid grid-cols-2 gap-2">
-                            {activeParent.children.map((sub) => (
-                              <Link key={sub.id} href={`/products?category=${sub.slug}`}
-                                className="rounded-xl border px-3 py-2 text-xs transition-all"
-                                style={{ borderColor: "var(--border)", color: "var(--text-dim)", background: "var(--surface-2)" }}
-                                onMouseOver={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.borderColor = "var(--gold-border)"; }}
-                                onMouseOut={e => { e.currentTarget.style.color = "var(--text-dim)"; e.currentTarget.style.borderColor = "var(--border)"; }}>
-                                {sub.name}
-                              </Link>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="rounded-xl border p-3 text-xs" style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}>
-                            No subcategories yet.
-                            <Link href={`/products?category=${activeParent.slug}`}
-                              className="block mt-2 hover-line" style={{ color: "var(--text-dim)" }}>
-                              Browse {activeParent.name} →
-                            </Link>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -274,6 +258,11 @@ export default function Navbar() {
             onMouseOver={e => (e.currentTarget.style.color = "var(--text)")}
             onMouseOut={e => (e.currentTarget.style.color = isActive("/clients") ? "var(--text)" : "var(--text-dim)")}>
             Clients
+          </Link>
+          <Link href="/blogs" style={navLinkStyle("/blogs")}
+            onMouseOver={e => (e.currentTarget.style.color = "var(--text)")}
+            onMouseOut={e => (e.currentTarget.style.color = isActive("/blogs") ? "var(--text)" : "var(--text-dim)")}>
+            Blogs
           </Link>
         </nav>
 
@@ -365,6 +354,7 @@ export default function Navbar() {
 
             <MobileLink href="/about"   label="About Us"    close={() => setMobileOpen(false)} active={isActive("/about")} />
             <MobileLink href="/clients" label="Our Clients" close={() => setMobileOpen(false)} active={isActive("/clients")} />
+            <MobileLink href="/blogs"   label="Blogs"       close={() => setMobileOpen(false)} active={isActive("/blogs")} />
             <MobileLink href="/contact" label="Contact Us"  close={() => setMobileOpen(false)} active={isActive("/contact")} />
 
             <div className="pt-2 pb-1">
