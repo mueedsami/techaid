@@ -158,6 +158,7 @@ export type ClientItem = {
   type: "University" | "Industry" | "Government" | "Institute" | "Research" | "Private" | string;
   sector?: string | null;
   summary?: string | null;
+  logo_url?: string | null;
 };
 
 export type TestimonialItem = {
@@ -227,6 +228,7 @@ export type AdminClient = {
   type: string;
   sector?: string | null;
   summary?: string | null;
+  logo_url?: string | null;
   is_active: boolean;
   sort_order: number;
 };

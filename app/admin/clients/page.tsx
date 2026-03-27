@@ -10,6 +10,7 @@ import {
   adminDeleteClient,
   adminListClients,
   adminUpdateClient,
+  adminUploadImage,
   AdminClient,
 } from "@/lib/api";
 
@@ -21,6 +22,7 @@ export default function AdminClientsPage() {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -29,6 +31,7 @@ export default function AdminClientsPage() {
     type: "University",
     sector: "",
     summary: "",
+    logo_url: "",
     sort_order: 0,
     is_active: true,
   });
@@ -51,6 +54,30 @@ export default function AdminClientsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isDraft = false, setter?: any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setError("");
+    try {
+      const res = await adminUploadImage(file);
+      if (res.ok && res.url) {
+        if (isDraft && setter) {
+          setter(res.url);
+        } else {
+          setNewItem({ ...newItem, logo_url: res.url });
+        }
+        setSuccess("Logo uploaded successfully.");
+      }
+    } catch (err: any) {
+      setError(err?.message || "Failed to upload logo");
+    } finally {
+      setUploadingImage(false);
+      if (e.target) e.target.value = "";
+    }
+  };
+
   const createClient = async () => {
     setCreating(true);
     setError("");
@@ -63,6 +90,7 @@ export default function AdminClientsPage() {
         type: "University",
         sector: "",
         summary: "",
+        logo_url: "",
         sort_order: 0,
         is_active: true,
       });
@@ -155,6 +183,30 @@ export default function AdminClientsPage() {
             value={String(newItem.sort_order)}
             onChange={(v) => setNewItem({ ...newItem, sort_order: Number(v || 0) })}
           />
+          <div className="md:col-span-2 flex flex-col gap-2">
+            <AdminInput
+              label="Logo URL"
+              value={newItem.logo_url || ""}
+              onChange={(v) => setNewItem({ ...newItem, logo_url: v })}
+            />
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                {uploadingImage ? "Uploading..." : "Upload Logo"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => handleImageUpload(e)}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+              {newItem.logo_url && (
+                <div className="h-12 w-12 overflow-hidden rounded border border-gray-200 bg-white">
+                  <img src={newItem.logo_url} alt="Preview" className="h-full w-full object-contain" />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="mt-3">
@@ -222,6 +274,7 @@ function ClientRow({
   onDelete: (id: number) => Promise<void>;
 }) {
   const [draft, setDraft] = useState(item);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => setDraft(item), [item]);
 
@@ -268,6 +321,43 @@ function ClientRow({
           value={String(draft.sort_order ?? 0)}
           onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })}
         />
+        <div className="md:col-span-2 flex flex-col gap-2">
+            <AdminInput label="Logo URL" value={draft.logo_url || ""} onChange={(v) => setDraft({ ...draft, logo_url: v })} />
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                {uploadingImage ? "Uploading..." : "Upload Logo"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setUploadingImage(true);
+                    try {
+                      const res = await adminUploadImage(file);
+                      if (res.ok && res.url) {
+                        setDraft({ ...draft, logo_url: res.url });
+                      } else {
+                        alert("Failed to upload image");
+                      }
+                    } catch (err: any) {
+                      alert(err?.message || "Failed to upload image");
+                    } finally {
+                      setUploadingImage(false);
+                      if (e.target) e.target.value = "";
+                    }
+                  }}
+                  disabled={uploadingImage}
+                  className="hidden"
+                />
+              </label>
+              {draft.logo_url && (
+                <div className="h-12 w-12 overflow-hidden rounded border border-gray-200 bg-white">
+                  <img src={draft.logo_url} alt="Preview" className="h-full w-full object-contain" />
+                </div>
+              )}
+            </div>
+          </div>
       </div>
 
       <div className="mt-3">
