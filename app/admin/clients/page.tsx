@@ -1,194 +1,293 @@
-import Link from "next/link";
-import { fetchClients, fetchTestimonials } from "@/lib/api";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { useEffect, useState } from "react";
+import AdminShell from "@/components/admin/AdminShell";
+import AdminSectionCard from "@/components/admin/AdminSectionCard";
+import AdminAlert from "@/components/admin/AdminAlert";
+import AdminInput from "@/components/admin/AdminInput";
+import {
+  adminCreateClient,
+  adminDeleteClient,
+  adminListClients,
+  adminUpdateClient,
+  AdminClient,
+} from "@/lib/api";
 
-const typeBadgeStyle = (type: string) => {
-  switch (type) {
-    case "University":
-      return { borderColor: "rgba(37,99,235,0.18)", background: "rgba(37,99,235,0.08)", color: "#1d4ed8" };
-    case "Industry":
-      return { borderColor: "rgba(16,185,129,0.18)", background: "rgba(16,185,129,0.08)", color: "#047857" };
-    case "Government":
-      return { borderColor: "rgba(245,158,11,0.18)", background: "rgba(245,158,11,0.08)", color: "#b45309" };
-    case "Institute":
-      return { borderColor: "rgba(139,92,246,0.18)", background: "rgba(139,92,246,0.08)", color: "#6d28d9" };
-    case "Research":
-      return { borderColor: "rgba(6,182,212,0.18)", background: "rgba(6,182,212,0.08)", color: "#0e7490" };
-    default:
-      return { borderColor: "var(--border-2)", background: "var(--surface-2)", color: "var(--text-dim)" };
-  }
-};
+const CLIENT_TYPES = ["University", "Industry", "Government", "Institute", "Research", "Private"];
 
-export default async function ClientsPage() {
-  const [clients, testimonials] = await Promise.all([
-    fetchClients().catch(() => []),
-    fetchTestimonials({ limit: 6 }).catch(() => []),
-  ]);
+export default function AdminClientsPage() {
+  const [items, setItems] = useState<AdminClient[]>([]);
+  const [q, setQ] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState<number | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const typeGroups = ["University", "Institute", "Industry", "Government", "Research", "Private"].reduce<Record<string, typeof clients>>((acc, t) => {
-    const group = clients.filter((c) => c.type === t);
-    if (group.length) acc[t] = group;
-    return acc;
-  }, {});
+  const [newItem, setNewItem] = useState({
+    name: "",
+    type: "University",
+    sector: "",
+    summary: "",
+    sort_order: 0,
+    is_active: true,
+  });
+
+  const load = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await adminListClients(q.trim() || undefined);
+      setItems(data);
+    } catch (e: any) {
+      setError(e?.message || "Failed to load clients");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const createClient = async () => {
+    setCreating(true);
+    setError("");
+    setSuccess("");
+    try {
+      await adminCreateClient(newItem);
+      setSuccess("Client added.");
+      setNewItem({
+        name: "",
+        type: "University",
+        sector: "",
+        summary: "",
+        sort_order: 0,
+        is_active: true,
+      });
+      await load();
+    } catch (e: any) {
+      setError(e?.message || "Failed to create client");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const updateRow = async (id: number, patch: Partial<AdminClient>) => {
+    setSavingId(id);
+    setError("");
+    setSuccess("");
+    try {
+      await adminUpdateClient(id, patch);
+      setSuccess(`Client #${id} updated.`);
+      await load();
+    } catch (e: any) {
+      setError(e?.message || "Failed to update client");
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const deleteRow = async (id: number) => {
+    if (!window.confirm(`Delete client #${id}?`)) return;
+    setSavingId(id);
+    setError("");
+    setSuccess("");
+    try {
+      await adminDeleteClient(id);
+      setSuccess(`Client #${id} deleted.`);
+      await load();
+    } catch (e: any) {
+      setError(e?.message || "Failed to delete client");
+    } finally {
+      setSavingId(null);
+    }
+  };
 
   return (
-    <main className="overflow-x-hidden">
+    <AdminShell title="Clients" activeTab="clients">
+      <AdminSectionCard>
+        <div className="grid gap-3 md:grid-cols-[1fr_auto_auto]">
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search clients..."
+            className="rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+          />
+          <button onClick={load} className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-200">
+            Search
+          </button>
+          <button
+            onClick={() => {
+              setQ("");
+              setTimeout(load, 0);
+            }}
+            className="rounded-xl border border-gray-200 bg-gray-100 px-4 py-2.5 text-sm hover:bg-gray-100"
+          >
+            Reset
+          </button>
+        </div>
+      </AdminSectionCard>
 
-      {/* ─── HERO ─── */}
-      <section className="relative px-6 sm:px-10 pt-20 pb-24">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="glow-blob w-[600px] h-[600px] bg-[var(--gold)] opacity-[0.04] top-[-10%] left-[-10%]" />
-          <div className="absolute top-1/3 right-[10%] w-32 h-32 rounded-full border opacity-20 anim-float" style={{ borderColor: "var(--gold-border)" }} />
+      {error && <AdminAlert type="error" text={error} />}
+      {success && <AdminAlert type="success" text={success} />}
+
+      <AdminSectionCard title="Add New Client">
+        <div className="grid gap-3 md:grid-cols-2">
+          <AdminInput label="Client Name" value={newItem.name} onChange={(v) => setNewItem({ ...newItem, name: v })} />
+          <div>
+            <label className="mb-1 block text-xs text-gray-500">Type</label>
+            <select
+              value={newItem.type}
+              onChange={(e) => setNewItem({ ...newItem, type: e.target.value })}
+              className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+            >
+              {CLIENT_TYPES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+          <AdminInput label="Sector" value={newItem.sector} onChange={(v) => setNewItem({ ...newItem, sector: v })} />
+          <AdminInput
+            label="Sort Order"
+            type="number"
+            value={String(newItem.sort_order)}
+            onChange={(v) => setNewItem({ ...newItem, sort_order: Number(v || 0) })}
+          />
         </div>
 
-        <div className="relative mx-auto max-w-7xl">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="gold-line !mb-0 !w-12" />
-            <span className="text-xs tracking-[0.25em] text-[var(--gold)] uppercase font-medium">Our Clients</span>
-          </div>
-          <h1 className="font-display text-[clamp(2.8rem,6vw,5.5rem)] font-semibold leading-[1.05] tracking-tight max-w-4xl">
-            Trusted Across<br />
-            <em className="shimmer-gold not-italic">Bangladesh's Leading</em><br />
-            Institutions
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-[var(--text-dim)]">
-            Technical Aid supports a diverse range of clients with engineering equipment, technical services, installation, and long-term support.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/contact"
-              className="group relative inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold overflow-hidden"
-              style={{ background: "var(--gold)", color: "var(--on-gold)" }}>
-              <span className="relative z-10">Start a Project</span>
-              <span className="relative z-10 transition-transform group-hover:translate-x-1">→</span>
-              <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" style={{ background: "var(--gold-light)" }} />
-            </Link>
-            <Link href="/services"
-              className="inline-flex items-center gap-2 rounded-2xl border px-6 py-3 text-sm font-medium transition-all hover:bg-black/5"
-              style={{ borderColor: "var(--border-2)", color: "var(--text-dim)" }}>
-              Explore Services
-            </Link>
-          </div>
+        <div className="mt-3">
+          <label className="mb-1 block text-xs text-gray-500">Summary</label>
+          <textarea
+            value={newItem.summary}
+            onChange={(e) => setNewItem({ ...newItem, summary: e.target.value })}
+            rows={3}
+            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+          />
         </div>
-      </section>
 
-      {/* ─── STATS ROW ─── */}
-      <div className="px-6 sm:px-10 pb-16">
-        <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Total Clients", value: `${clients.length}+` },
-            { label: "Universities & Institutes", value: `${(typeGroups["University"]?.length || 0) + (typeGroups["Institute"]?.length || 0)}+` },
-            { label: "Industry & Government", value: `${(typeGroups["Industry"]?.length || 0) + (typeGroups["Government"]?.length || 0)}+` },
-            { label: "Years of Service", value: "6+" },
-          ].map((s) => (
-            <div key={s.label} className="grad-border p-5 text-center">
-              <p className="font-display text-3xl font-semibold shimmer-gold">{s.value}</p>
-              <p className="mt-1 text-xs text-[var(--text-muted)] tracking-wide uppercase">{s.label}</p>
-            </div>
-          ))}
+        <label className="mt-3 inline-flex items-center gap-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={newItem.is_active}
+            onChange={(e) => setNewItem({ ...newItem, is_active: e.target.checked })}
+          />
+          Active
+        </label>
+
+        <div className="mt-4">
+          <button
+            onClick={createClient}
+            disabled={creating}
+            className="rounded-xl border border-gray-300 bg-gray-100 px-4 py-2.5 text-sm font-medium hover:bg-gray-200 disabled:opacity-60"
+          >
+            {creating ? "Adding..." : "Add Client"}
+          </button>
+        </div>
+      </AdminSectionCard>
+
+      <AdminSectionCard title="Manage Clients">
+        {loading ? (
+          <p className="text-sm text-gray-500">Loading...</p>
+        ) : items.length === 0 ? (
+          <p className="text-sm text-gray-500">No clients found.</p>
+        ) : (
+          <div className="space-y-3">
+            {items.map((item) => (
+              <ClientRow
+                key={item.id}
+                item={item}
+                saving={savingId === item.id}
+                onSave={updateRow}
+                onDelete={deleteRow}
+              />
+            ))}
+          </div>
+        )}
+      </AdminSectionCard>
+    </AdminShell>
+  );
+}
+
+function ClientRow({
+  item,
+  saving,
+  onSave,
+  onDelete,
+}: {
+  item: AdminClient;
+  saving: boolean;
+  onSave: (id: number, patch: Partial<AdminClient>) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
+}) {
+  const [draft, setDraft] = useState(item);
+
+  useEffect(() => setDraft(item), [item]);
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-sm font-medium">#{item.id}</p>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onDelete(item.id)}
+            disabled={saving}
+            className="rounded-lg border border-rose-400/20 bg-rose-400/10 px-3 py-1.5 text-xs text-rose-200 hover:bg-rose-100 disabled:opacity-60"
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => onSave(item.id, draft)}
+            disabled={saving}
+            className="rounded-lg border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs hover:bg-gray-200 disabled:opacity-60"
+          >
+            {saving ? "Saving..." : "Save"}
+          </button>
         </div>
       </div>
 
-      {/* ─── CLIENTS BY TYPE ─── */}
-      {Object.entries(typeGroups).map(([type, items]) => (
-        <section key={type} className="px-6 sm:px-10 pb-10">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center gap-4 mb-6">
-              <h2 className="font-display text-xl font-semibold tracking-tight text-[var(--text)]">{type}s</h2>
-              <span className="rounded-full border px-3 py-0.5 text-xs" style={typeBadgeStyle(type)}>
-                {items.length}
-              </span>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {items.map((client) => (
-                <article key={client.id} className="card-lift grad-border p-5 flex flex-col gap-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-semibold text-[var(--text)] text-sm leading-5">{client.name}</h3>
-                    <span className="shrink-0 rounded-full border px-2 py-0.5 text-[10px]" style={typeBadgeStyle(client.type)}>
-                      {client.type}
-                    </span>
-                  </div>
-                  {client.sector && (
-                    <p className="text-xs text-[var(--gold)] opacity-80">{client.sector}</p>
-                  )}
-                  {client.summary && (
-                    <p className="text-sm text-[var(--text-dim)] leading-6">{client.summary}</p>
-                  )}
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      ))}
-
-      {clients.length === 0 && (
-        <div className="px-6 sm:px-10 pb-16">
-          <div className="mx-auto max-w-7xl grad-border p-12 text-center">
-            <p className="text-[var(--text-muted)]">Client information will be published soon.</p>
-          </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        <AdminInput label="Name" value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Type</label>
+          <select
+            value={draft.type}
+            onChange={(e) => setDraft({ ...draft, type: e.target.value })}
+            className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm"
+          >
+            {CLIENT_TYPES.map((t) => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
         </div>
-      )}
+        <AdminInput label="Sector" value={draft.sector || ""} onChange={(v) => setDraft({ ...draft, sector: v })} />
+        <AdminInput
+          label="Sort Order"
+          type="number"
+          value={String(draft.sort_order ?? 0)}
+          onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })}
+        />
+      </div>
 
-      {/* ─── TESTIMONIALS ─── */}
-      {testimonials.length > 0 && (
-        <section className="px-6 sm:px-10 py-24" style={{ background: "var(--surface-2)" }}>
-          <div className="mx-auto max-w-7xl">
-            <span className="gold-line" />
-            <h2 className="font-display text-3xl font-semibold tracking-tight mb-12">What Clients Say</h2>
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {testimonials.map((t) => (
-                <div key={t.id} className="card-lift grad-border p-6 flex flex-col">
-                  <div className="flex items-center gap-1 mb-4">
-                    {Array.from({ length: Math.min(5, t.rating || 5) }).map((_, i) => (
-                      <span key={i} className="text-[var(--gold)] text-sm">★</span>
-                    ))}
-                  </div>
-                  <p className="text-sm leading-7 text-[var(--text-dim)] italic font-display flex-1">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <div className="mt-5 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
-                    <p className="text-sm font-semibold text-[var(--text)]">{t.name}</p>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      {[t.role, t.company].filter(Boolean).join(" · ")}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <div className="mt-3">
+        <label className="mb-1 block text-xs text-gray-500">Summary</label>
+        <textarea
+          value={draft.summary || ""}
+          onChange={(e) => setDraft({ ...draft, summary: e.target.value })}
+          rows={3}
+          className="w-full rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5 text-sm outline-none focus:border-gray-300"
+        />
+      </div>
 
-      {/* ─── CTA ─── */}
-      <section className="relative px-6 sm:px-10 py-24 overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="glow-blob w-[600px] h-[400px] bg-[var(--gold)] opacity-[0.03] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-        </div>
-        <div className="relative mx-auto max-w-4xl text-center">
-          <span className="gold-line block mb-6" style={{ margin: "0 auto 1.5rem" }} />
-          <h2 className="font-display text-3xl font-semibold tracking-tight">
-            Looking for a Dependable Engineering Partner?
-          </h2>
-          <p className="mt-4 max-w-xl mx-auto text-[var(--text-dim)] leading-7">
-            Whether you need sourcing, installation, training, or servicing support — Technical Aid is ready to help.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/contact"
-              className="group relative inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-sm font-semibold overflow-hidden"
-              style={{ background: "var(--gold)", color: "var(--on-gold)" }}>
-              <span className="relative z-10">Contact Us</span>
-              <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" style={{ background: "var(--gold-light)" }} />
-            </Link>
-            <Link href="/about"
-              className="inline-flex items-center gap-2 rounded-2xl border px-7 py-4 text-sm font-medium transition-all hover:bg-black/5"
-              style={{ borderColor: "var(--border-2)", color: "var(--text-dim)" }}>
-              About Technical Aid
-            </Link>
-          </div>
-        </div>
-      </section>
-
-    </main>
+      <label className="mt-3 inline-flex items-center gap-2 text-sm text-gray-700">
+        <input
+          type="checkbox"
+          checked={!!draft.is_active}
+          onChange={(e) => setDraft({ ...draft, is_active: e.target.checked })}
+        />
+        Active
+      </label>
+    </div>
   );
 }
