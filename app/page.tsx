@@ -1,6 +1,6 @@
 import Link from "next/link";
 import FeaturedProductsCarousel from "@/components/sections/FeaturedProductsCarousel";
-import { fetchProducts, fetchTestimonials, fetchClients } from "@/lib/api";
+import { fetchProducts, fetchTestimonials, fetchClients, fetchBlogs } from "@/lib/api";
 
 const services = [
   { id: "global-sourcing",       icon: "◈", title: "Global Sourcing",          desc: "Precision-matched machinery and components from international markets." },
@@ -20,10 +20,11 @@ const stats = [
 const clientTypes = ["University", "Institute", "Industry", "Government", "Research"];
 
 export default async function HomePage() {
-  const [featuredProducts, testimonials, clients] = await Promise.all([
+  const [featuredProducts, testimonials, clients, blogsList] = await Promise.all([
     fetchProducts({ featured: true, limit: 6 }).catch(() => []),
     fetchTestimonials({ featured: true, limit: 3 }).catch(() => []),
     fetchClients().catch(() => []),
+    fetchBlogs({ limit: 3 }).catch(() => []),
   ]);
 
   const clientTypeGroups = clientTypes.reduce<Record<string, number>>((acc, t) => {
@@ -31,8 +32,9 @@ export default async function HomePage() {
     return acc;
   }, {});
 
-  const marqueeClients = clients.length > 0
-    ? [...clients, ...clients].slice(0, 24)
+  const recentClients = clients.slice(0, 10);
+  const marqueeClients = recentClients.length > 0
+    ? [...recentClients, ...recentClients, ...recentClients].slice(0, 24)
     : [];
 
   return (
@@ -131,12 +133,17 @@ export default async function HomePage() {
           <div className="absolute right-0 top-0 w-20 h-full z-10"
             style={{ background: "linear-gradient(to left, var(--bg), transparent)" }} />
 
-          <div className="flex w-max marquee-track gap-8 items-center">
+          <div className="flex w-max marquee-track gap-10 items-center pr-10">
             {marqueeClients.map((c, i) => (
-              <span key={i} className="whitespace-nowrap text-sm text-[var(--text-muted)] px-4 py-1 rounded-full border"
-                style={{ borderColor: "var(--border)" }}>
-                {c.name}
-              </span>
+              <div key={i} className="flex shrink-0 items-center justify-center p-3 grayscale opacity-70 transition-all hover:grayscale-0 hover:opacity-100">
+                {c.logo_url ? (
+                  <img src={c.logo_url} alt={c.name} className="h-10 w-auto object-contain max-w-[140px]" />
+                ) : (
+                  <span className="whitespace-nowrap text-base font-display font-semibold text-[var(--text-muted)] p-2">
+                    {c.name}
+                  </span>
+                )}
+              </div>
             ))}
           </div>
         </div>
@@ -193,7 +200,7 @@ export default async function HomePage() {
 
             {/* CTA card */}
             <div className="grad-border p-7 flex flex-col justify-between"
-              style={{ background: "linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.02))" }}>
+              style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.04), rgba(15,23,42,0.01))" }}>
               <div>
                 <p className="text-xs tracking-widest text-[var(--gold)] uppercase mb-4">Custom Requirement?</p>
                 <h3 className="font-display text-xl font-semibold leading-tight">
@@ -410,6 +417,71 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════
+          LATEST BLOGS
+      ══════════════════════════════════════════════════ */}
+      {blogsList.length > 0 && (
+        <section className="px-6 sm:px-10 py-28" style={{ background: "var(--surface)" }}>
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+              <div>
+                <span className="gold-line" />
+                <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight tracking-tight">
+                  Latest Updates
+                </h2>
+                <p className="mt-4 max-w-xl text-[var(--text-dim)]">
+                  Recent activities, project highlights, and technical insights from Technical Aid.
+                </p>
+              </div>
+              <Link
+                href="/blogs"
+                className="hover-line self-start md:self-auto text-sm text-[var(--text-dim)] hover:text-[var(--gold)] transition-colors"
+              >
+                View all blogs →
+              </Link>
+            </div>
+            
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {blogsList.slice(0, 3).map((b: any) => (
+                <Link
+                  key={b.id}
+                  href={`/blogs/${b.slug}`}
+                  className="card-lift group grad-border overflow-hidden flex flex-col"
+                >
+                  <div className="aspect-[16/10] overflow-hidden" style={{ background: "var(--surface-2)" }}>
+                    {b.image_url ? (
+                      <img
+                        src={b.image_url}
+                        alt={b.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-[var(--text-muted)] text-xs tracking-widest uppercase">TA Update</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 p-6 flex flex-col">
+                    <p className="text-xs text-[var(--gold)] opacity-80 mb-3">
+                      {b.published_at ? new Date(b.published_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent'}
+                    </p>
+                    <h3 className="font-semibold text-lg text-[var(--text)] leading-snug">{b.title}</h3>
+                    {b.summary && (
+                      <p className="mt-3 text-sm text-[var(--text-dim)] line-clamp-2 leading-relaxed flex-1">{b.summary}</p>
+                    )}
+                    <div className="mt-6 pt-4 border-t flex items-center justify-between" style={{ borderColor: "var(--border)" }}>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[var(--gold)] transition-transform group-hover:translate-x-1">
+                        Read Article →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════════════
           FINAL CTA

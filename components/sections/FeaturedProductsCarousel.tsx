@@ -90,11 +90,8 @@ export default function FeaturedProductsCarousel({ products }: Props) {
               href={`/products/${p.slug}`}
               className="group relative overflow-hidden rounded-[28px] border bg-white/70 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(17,24,39,0.12)]"
               style={{
-                borderColor: cardIndex === 0 ? "var(--gold-border)" : "var(--border)",
-                background:
-                  cardIndex === 0
-                    ? "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,245,237,0.96))"
-                    : "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86))",
+                borderColor: "var(--border)",
+                background: "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86))",
               }}
             >
               <div className="absolute inset-x-8 top-0 h-px opacity-70" style={{ background: "linear-gradient(to right, transparent, var(--gold-border), transparent)" }} />
