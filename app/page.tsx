@@ -47,29 +47,48 @@ export default async function HomePage() {
 
         {/* Background geometry */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {/* Gold glow blobs */}
-          <div className="glow-blob w-[600px] h-[600px] bg-[var(--gold)] opacity-[0.04] top-[-10%] left-[-10%]" />
-          <div className="glow-blob w-[400px] h-[400px] bg-[var(--gold)] opacity-[0.03] bottom-[5%] right-[-5%]" />
+          {/* Background Image and Textures */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop"
+              alt="Engineering background texture"
+              className="w-full h-full object-cover object-center opacity-15 md:opacity-20 mix-blend-luminosity"
+            />
+            {/* Subtle Gradient Overlays for integration */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/90 via-transparent to-[var(--bg)]/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg)] via-transparent to-transparent opacity-80" />
+            
+            {/* Grain Texture */}
+            <div className="absolute inset-0 mix-blend-overlay opacity-[0.15]"
+              style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noise\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.8\" numOctaves=\"4\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noise)\"/%3E%3C/svg%3E')" }}
+            />
+          </div>
 
-          {/* Fine grid */}
-          <div className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-              backgroundSize: "64px 64px"
-            }}
-          />
+          <div className="absolute inset-0 z-10">
+            {/* Gold glow blobs */}
+            <div className="glow-blob w-[600px] h-[600px] bg-[var(--gold)] opacity-[0.04] top-[-10%] left-[-10%]" />
+            <div className="glow-blob w-[400px] h-[400px] bg-[var(--gold)] opacity-[0.03] bottom-[5%] right-[-5%]" />
 
-          {/* Diagonal gold accent line */}
-          <div className="absolute top-[20%] right-[8%] w-px h-[45vh] opacity-20"
-            style={{ background: "linear-gradient(to bottom, transparent, var(--gold), transparent)" }}
-          />
-          <div className="absolute bottom-[15%] left-[12%] w-[35vw] h-px opacity-10"
-            style={{ background: "linear-gradient(to right, transparent, var(--gold), transparent)" }}
-          />
+            {/* Fine grid */}
+            <div className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage: "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
+                backgroundSize: "64px 64px"
+              }}
+            />
 
-          {/* Floating ring */}
-          <div className="absolute top-[18%] right-[15%] w-32 h-32 rounded-full border border-[var(--gold-border)] opacity-30 anim-float" style={{ animationDelay: "1s" }} />
-          <div className="absolute bottom-[20%] left-[8%] w-20 h-20 rounded-full border border-[var(--gold-border)] opacity-20 anim-float" style={{ animationDelay: "2.5s" }} />
+            {/* Diagonal gold accent line */}
+            <div className="absolute top-[20%] right-[8%] w-px h-[45vh] opacity-20"
+              style={{ background: "linear-gradient(to bottom, transparent, var(--gold), transparent)" }}
+            />
+            <div className="absolute bottom-[15%] left-[12%] w-[35vw] h-px opacity-10"
+              style={{ background: "linear-gradient(to right, transparent, var(--gold), transparent)" }}
+            />
+
+            {/* Floating ring */}
+            <div className="absolute top-[18%] right-[15%] w-32 h-32 rounded-full border border-[var(--gold-border)] opacity-30 anim-float" style={{ animationDelay: "1s" }} />
+            <div className="absolute bottom-[20%] left-[8%] w-20 h-20 rounded-full border border-[var(--gold-border)] opacity-20 anim-float" style={{ animationDelay: "2.5s" }} />
+          </div>
         </div>
 
         <div className="relative mx-auto w-full max-w-7xl">
@@ -135,7 +154,7 @@ export default async function HomePage() {
 
           <div className="flex w-max marquee-track gap-10 items-center pr-10">
             {marqueeClients.map((c, i) => (
-              <div key={i} className="flex shrink-0 items-center justify-center p-3 grayscale opacity-70 transition-all hover:grayscale-0 hover:opacity-100">
+              <div key={i} className="flex shrink-0 items-center justify-center p-3 opacity-90 transition-all hover:opacity-100 hover:scale-[1.03]">
                 {c.logo_url ? (
                   <img src={c.logo_url} alt={c.name} className="h-10 w-auto object-contain max-w-[140px]" />
                 ) : (
@@ -148,79 +167,6 @@ export default async function HomePage() {
           </div>
         </div>
       )}
-
-      {/* ══════════════════════════════════════════════════
-          SERVICES
-      ══════════════════════════════════════════════════ */}
-      <section className="relative px-6 sm:px-10 py-28">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="glow-blob w-[500px] h-[500px] bg-[var(--gold)] opacity-[0.025] top-[20%] left-[50%] -translate-x-1/2" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <div>
-              <span className="gold-line" />
-              <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight tracking-tight">
-                Five Ways We<br />Deliver Value
-              </h2>
-            </div>
-            <Link
-              href="/services"
-              className="hover-line self-start md:self-auto text-sm text-[var(--text-dim)] hover:text-[var(--gold)] transition-colors"
-            >
-              All service lines →
-            </Link>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => (
-              <Link
-                key={s.id}
-                href={`/services#${s.id}`}
-                className="card-lift group grad-border p-7 flex flex-col gap-4"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl text-[var(--gold)] opacity-60 font-display">{s.icon}</span>
-                  <span className="text-xs text-[var(--text-muted)] font-mono">0{i + 1}</span>
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--text)]">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[var(--text-dim)]">{s.desc}</p>
-                </div>
-                <div className="mt-auto pt-3 border-t flex items-center justify-between"
-                  style={{ borderColor: "var(--border)" }}>
-                  <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore →
-                  </span>
-                </div>
-              </Link>
-            ))}
-
-            {/* CTA card */}
-            <div className="grad-border p-7 flex flex-col justify-between"
-              style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.04), rgba(15,23,42,0.01))" }}>
-              <div>
-                <p className="text-xs tracking-widest text-[var(--gold)] uppercase mb-4">Custom Requirement?</p>
-                <h3 className="font-display text-xl font-semibold leading-tight">
-                  Tell us what you need to build
-                </h3>
-                <p className="mt-3 text-sm text-[var(--text-dim)]">
-                  Our engineers assess your requirements and propose the most reliable and cost-effective solution.
-                </p>
-              </div>
-              <Link
-                href="/contact"
-                className="mt-6 self-start inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:opacity-90"
-                style={{ background: "var(--gold)", color: "var(--on-gold)" }}
-              >
-                Contact Engineers
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════════════════
           FEATURED PRODUCTS
@@ -297,6 +243,79 @@ export default async function HomePage() {
         // </section>
         <FeaturedProductsCarousel products={featuredProducts} />
       )}
+
+      {/* ══════════════════════════════════════════════════
+          SERVICES
+      ══════════════════════════════════════════════════ */}
+      <section className="relative px-6 sm:px-10 py-28">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="glow-blob w-[500px] h-[500px] bg-[var(--gold)] opacity-[0.025] top-[20%] left-[50%] -translate-x-1/2" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+            <div>
+              <span className="gold-line" />
+              <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-tight tracking-tight">
+                Five Ways We<br />Deliver Value
+              </h2>
+            </div>
+            <Link
+              href="/services"
+              className="hover-line self-start md:self-auto text-sm text-[var(--text-dim)] hover:text-[var(--gold)] transition-colors"
+            >
+              All service lines →
+            </Link>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {services.map((s, i) => (
+              <Link
+                key={s.id}
+                href={`/services#${s.id}`}
+                className="card-lift group grad-border p-7 flex flex-col gap-4"
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl text-[var(--gold)] opacity-60 font-display">{s.icon}</span>
+                  <span className="text-xs text-[var(--text-muted)] font-mono">0{i + 1}</span>
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-[var(--text)]">{s.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--text-dim)]">{s.desc}</p>
+                </div>
+                <div className="mt-auto pt-3 border-t flex items-center justify-between"
+                  style={{ borderColor: "var(--border)" }}>
+                  <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore →
+                  </span>
+                </div>
+              </Link>
+            ))}
+
+            {/* CTA card */}
+            <div className="grad-border p-7 flex flex-col justify-between"
+              style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.04), rgba(15,23,42,0.01))" }}>
+              <div>
+                <p className="text-xs tracking-widest text-[var(--gold)] uppercase mb-4">Custom Requirement?</p>
+                <h3 className="font-display text-xl font-semibold leading-tight">
+                  Tell us what you need to build
+                </h3>
+                <p className="mt-3 text-sm text-[var(--text-dim)]">
+                  Our engineers assess your requirements and propose the most reliable and cost-effective solution.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="mt-6 self-start inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:opacity-90"
+                style={{ background: "var(--gold)", color: "var(--on-gold)" }}
+              >
+                Contact Engineers
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ══════════════════════════════════════════════════
           CLIENT TRUST SECTION
