@@ -115,8 +115,10 @@ export default function Navbar() {
           <Image
             src="/Logo-size.jpg"
             alt="Technical Aid logo"
-            width={56}
-            height={56}
+            width={120}
+            height={120}
+            quality={100}
+            unoptimized
             className="h-[56px] w-auto object-contain transition-transform duration-300 group-hover:-translate-y-0.5"
             priority
           />
