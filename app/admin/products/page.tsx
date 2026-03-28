@@ -42,6 +42,7 @@ export default function AdminProductsPage() {
     key_features_text: "",
     educational_objectives_text: "",
     technical_specs_text: "",
+    brochure_url: "",
     sort_order: 0,
     is_featured: true,
     is_active: true,
@@ -84,6 +85,7 @@ export default function AdminProductsPage() {
         model_code: newItem.model_code || null,
         image_url: newItem.image_url || null,
         sector_tag: newItem.sector_tag || null,
+        brochure_url: newItem.brochure_url || null,
         summary: newItem.summary || null,
         description: newItem.description || null,
         key_features: newItem.key_features_text ? newItem.key_features_text.split("\n").filter(Boolean) : undefined,
@@ -109,6 +111,7 @@ export default function AdminProductsPage() {
         key_features_text: "",
         educational_objectives_text: "",
         technical_specs_text: "",
+        brochure_url: "",
         sort_order: 0,
         is_featured: true,
         is_active: true,
@@ -250,6 +253,12 @@ export default function AdminProductsPage() {
             label="Sector Tag"
             value={newItem.sector_tag}
             onChange={(v) => setNewItem({ ...newItem, sector_tag: v })}
+          />
+
+          <AdminInput
+            label="Brochure URL"
+            value={newItem.brochure_url}
+            onChange={(v) => setNewItem({ ...newItem, brochure_url: v })}
           />
 
           <AdminInput
@@ -494,6 +503,7 @@ function ProductRow({
       model_code: draft.model_code || null,
       image_url: draft.image_url || null,
       sector_tag: draft.sector_tag || null,
+      brochure_url: draft.brochure_url || null,
       summary: draft.summary || null,
       description: draft.description || null,
       key_features: draft.key_features_text ? draft.key_features_text.split("\n").filter(Boolean) : undefined,
@@ -559,6 +569,7 @@ function ProductRow({
         <AdminInput label="Short Title" value={draft.short_title || ""} onChange={(v) => setDraft({ ...draft, short_title: v })} />
         <AdminInput label="Model Code" value={draft.model_code || ""} onChange={(v) => setDraft({ ...draft, model_code: v })} />
         <AdminInput label="Sector Tag" value={draft.sector_tag || ""} onChange={(v) => setDraft({ ...draft, sector_tag: v })} />
+        <AdminInput label="Brochure URL" value={draft.brochure_url || ""} onChange={(v) => setDraft({ ...draft, brochure_url: v })} />
         <AdminInput label="Sort Order" type="number" value={String(draft.sort_order || 0)} onChange={(v) => setDraft({ ...draft, sort_order: Number(v || 0) })} />
 
         <div className="md:col-span-2 flex flex-col gap-2">

@@ -360,6 +360,7 @@ export type PublicProductDetails = PublicProductCard & {
   technical_specs: { label: string; value: string }[];
   gallery_images: string[];
   educational_objectives: string[];
+  brochure_url?: string | null;
 };
 
 export async function fetchProductCategories(): Promise<PublicProductCategory[]> {
@@ -458,6 +459,7 @@ export type AdminProduct = {
   category?: { id: number; name: string; slug: string } | null;
   model_code?: string | null;
   educational_objectives: string[];
+  brochure_url?: string | null;
 };
 
 export async function adminListProductCategories(q?: string): Promise<AdminProductCategory[]> {
