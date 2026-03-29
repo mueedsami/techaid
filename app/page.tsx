@@ -365,7 +365,7 @@ export default async function HomePage() {
             ))}
 
             {/* CTA card - Spans 2 rows in the right-most column */}
-            <div className="lg:col-start-4 lg:row-span-2 p-8 flex flex-col justify-between rounded-2xl relative overflow-hidden"
+            <div className="lg:col-start-4 lg:row-start-1 lg:row-span-2 p-8 flex flex-col justify-between rounded-2xl relative overflow-hidden"
               style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98))", border: "1px solid var(--border)" }}>
               {/* Ornamental geometry */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--gold)] blur-[100px] opacity-10 pointer-events-none rounded-full" />
