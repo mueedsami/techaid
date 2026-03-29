@@ -161,7 +161,7 @@ export default function Navbar() {
               <span style={{ fontSize: "0.5rem", opacity: 0.5, transition: "transform 0.2s", transform: servicesOpen ? "rotate(180deg)" : "none" }}>▾</span>
             </button>
             {servicesOpen && (
-              <div className="absolute left-0 mt-4 w-60 rounded-2xl overflow-hidden bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] ring-1 ring-black/5 transition-all">
+              <div className="absolute left-0 mt-4 w-60 rounded-2xl overflow-hidden bg-white shadow-2xl border border-gray-100 transition-all z-[999]">
                 <div className="p-2">
                   {SERVICES.map((s) => (
                     <Link key={s.hash} href={`/services#${s.hash}`}
@@ -194,7 +194,7 @@ export default function Navbar() {
               <span style={{ fontSize: "0.5rem", opacity: 0.5, transition: "transform 0.2s", transform: productsOpen ? "rotate(180deg)" : "none" }}>▾</span>
             </button>
             {productsOpen && (
-              <div className="absolute left-1/2 -translate-x-1/2 mt-4 w-max min-w-[650px] max-w-[800px] rounded-2xl bg-white/95 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] ring-1 ring-black/5 transition-all">
+              <div className="absolute left-1/2 -translate-x-1/2 mt-4 w-max min-w-[650px] max-w-[800px] rounded-2xl bg-white shadow-2xl border border-gray-100 transition-all z-[999]">
                 <div className="p-8">
                   <div className="flex items-center justify-between mb-6 pb-5 border-b border-slate-100">
                     <div className="flex flex-col">
