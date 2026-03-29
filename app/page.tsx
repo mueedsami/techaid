@@ -346,9 +346,9 @@ export default async function HomePage() {
                 </div>
 
                 {/* Content over image */}
-                <div className="relative z-10 p-6 flex flex-col h-full border border-white/10 rounded-2xl transition-colors group-hover:border-[var(--gold)]/40 hover:bg-white/5">
+                <div className="relative z-10 p-6 flex flex-col h-full border border-white/10 rounded-2xl transition-colors group-hover:border-white/40 hover:bg-white/5">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl text-[var(--gold)] font-display bg-black/40 p-2 rounded-lg backdrop-blur-md">{s.icon}</span>
+                    <span className="text-2xl text-white font-display bg-black/40 p-2 rounded-lg backdrop-blur-md">{s.icon}</span>
                     <span className="text-xs text-white/60 font-mono bg-black/40 px-2 py-1 rounded backdrop-blur-sm">0{i + 1}</span>
                   </div>
                   <div className="mt-auto">
@@ -356,7 +356,7 @@ export default async function HomePage() {
                     <p className="mt-2 text-[0.85rem] leading-[1.6] text-white/70 drop-shadow-sm">{s.desc}</p>
                   </div>
                   <div className="mt-5 pt-3 border-t flex items-center justify-between border-white/10">
-                    <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider font-semibold">
+                    <span className="text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider font-semibold">
                       Explore →
                     </span>
                   </div>
@@ -368,11 +368,11 @@ export default async function HomePage() {
             <div className="lg:col-start-4 lg:row-start-1 lg:row-span-2 p-8 flex flex-col justify-between rounded-2xl relative overflow-hidden"
               style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98))", border: "1px solid var(--border)" }}>
               {/* Ornamental geometry */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--gold)] blur-[100px] opacity-10 pointer-events-none rounded-full" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[var(--gold)] blur-[80px] opacity-5 pointer-events-none rounded-full" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white blur-[100px] opacity-10 pointer-events-none rounded-full" />
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white blur-[80px] opacity-5 pointer-events-none rounded-full" />
               
               <div className="relative z-10 space-y-4">
-                <p className="inline-block text-[10px] tracking-[0.2em] text-[var(--gold)] uppercase font-semibold border border-[var(--gold)]/30 px-3 py-1.5 rounded-full bg-[var(--gold)]/5">
+                <p className="inline-block text-[10px] tracking-[0.2em] text-white uppercase font-semibold border border-white/30 px-3 py-1.5 rounded-full bg-white/10">
                   Custom Requirement?
                 </p>
                 <h3 className="font-display text-[1.75rem] md:text-3xl font-semibold leading-tight text-white mb-2">
@@ -385,8 +385,7 @@ export default async function HomePage() {
               <div className="relative z-10 mt-10 md:mt-16">
                 <Link
                   href="/contact"
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-semibold transition-all hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(0,0,0,0.39)]"
-                  style={{ background: "var(--gold)", color: "var(--on-gold)" }}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-semibold transition-all hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(0,0,0,0.39)] bg-white text-slate-900"
                 >
                   Contact Engineers →
                 </Link>
