@@ -12,6 +12,7 @@ const SERVICES = [
   { label: "Repairing & Servicing",   hash: "repairing-servicing" },
   { label: "Training",                hash: "training" },
   { label: "Design & Implementation", hash: "design-implementation" },
+  { label: "Student Projects",        hash: "student-projects" },
 ];
 
 export default function Navbar() {

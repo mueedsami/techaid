@@ -15,6 +15,7 @@ const services = [
   { label: "Repairing & Servicing",  href: "/services#repairing-servicing" },
   { label: "Training",               href: "/services#training" },
   { label: "Design & Implementation",href: "/services#design-implementation" },
+  { label: "Student Projects",       href: "/services#student-projects" },
 ];
 
 export default function Footer() {

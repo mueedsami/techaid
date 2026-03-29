@@ -78,6 +78,21 @@ const services = [
       "Commissioning and production-ready delivery",
     ],
   },
+  {
+    id: "student-projects",
+    number: "06",
+    title: "Student Projects",
+    intro: "Comprehensive mentorship, hardware access, and technical guidance for university engineering projects and research initiatives.",
+    bullets: [
+      "Hardware selection and sourcing guidance",
+      "Prototype design and fabrication support",
+      "Embedded systems and IoT programming mentorship",
+      "Access to professional testing and measurement tools",
+      "Debugging and troubleshooting assistance",
+      "Technical documentation review",
+      "Industry-standard best practices implementation",
+    ],
+  },
 ];
 
 export default function ServicesPage() {

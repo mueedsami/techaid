@@ -12,6 +12,7 @@ const services = [
     ),
     title: "Global Sourcing",
     desc: "Precision-matched machinery and components from international markets.",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2000&auto=format&fit=crop",
   },
   {
     id: "supply-installation",
@@ -22,6 +23,7 @@ const services = [
     ),
     title: "Supply & Installation",
     desc: "Complete electrical systems — substations, panels, transformers.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop",
   },
   {
     id: "repairing-servicing",
@@ -32,6 +34,7 @@ const services = [
     ),
     title: "Repairing & Servicing",
     desc: "Preventive maintenance and rapid repair for industrial systems.",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2000&auto=format&fit=crop",
   },
   {
     id: "training",
@@ -42,6 +45,7 @@ const services = [
     ),
     title: "Training",
     desc: "Hands-on automation and power systems programs for engineers.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2000&auto=format&fit=crop",
   },
   {
     id: "design-implementation",
@@ -52,6 +56,18 @@ const services = [
     ),
     title: "Design & Implementation",
     desc: "Electrical, PCB, mechanical CAD/CAM and automation from concept to production.",
+    image: "https://images.unsplash.com/photo-1581092335397-9583eb92d232?q=80&w=2000&auto=format&fit=crop",
+  },
+  {
+    id: "student-projects",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+      </svg>
+    ),
+    title: "Student Projects",
+    desc: "Mentorship and hardware access for university engineering projects and research.",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000&auto=format&fit=crop",
   },
 ];
 
@@ -313,50 +329,68 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
             {services.map((s, i) => (
               <Link
                 key={s.id}
                 href={`/services#${s.id}`}
-                className="card-lift group grad-border p-7 flex flex-col gap-4"
+                className="group relative overflow-hidden flex flex-col gap-4 rounded-2xl min-h-[260px] md:min-h-[280px]"
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl text-[var(--gold)] opacity-60 font-display">{s.icon}</span>
-                  <span className="text-xs text-[var(--text-muted)] font-mono">0{i + 1}</span>
+                {/* Background Image Layer */}
+                <div className="absolute inset-0 z-0">
+                  <img src={s.image} alt={s.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  {/* Heavy dark gradient to ensure text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/90 to-[var(--bg)]/50 mix-blend-multiply opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000] via-[#000]/60 to-[#000]/20 opacity-80" />
                 </div>
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--text)]">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[var(--text-dim)]">{s.desc}</p>
-                </div>
-                <div className="mt-auto pt-3 border-t flex items-center justify-between"
-                  style={{ borderColor: "var(--border)" }}>
-                  <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore →
-                  </span>
+
+                {/* Content over image */}
+                <div className="relative z-10 p-6 flex flex-col h-full border border-white/10 rounded-2xl transition-colors group-hover:border-[var(--gold)]/40 hover:bg-white/5">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-2xl text-[var(--gold)] font-display bg-black/40 p-2 rounded-lg backdrop-blur-md">{s.icon}</span>
+                    <span className="text-xs text-white/60 font-mono bg-black/40 px-2 py-1 rounded backdrop-blur-sm">0{i + 1}</span>
+                  </div>
+                  <div className="mt-auto">
+                    <h3 className="text-[1.1rem] font-semibold text-white tracking-wide">{s.title}</h3>
+                    <p className="mt-2 text-[0.85rem] leading-[1.6] text-white/70 drop-shadow-sm">{s.desc}</p>
+                  </div>
+                  <div className="mt-5 pt-3 border-t flex items-center justify-between border-white/10">
+                    <span className="text-xs text-[var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider font-semibold">
+                      Explore →
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
 
-            {/* CTA card */}
-            <div className="grad-border p-7 flex flex-col justify-between"
-              style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.04), rgba(15,23,42,0.01))" }}>
-              <div>
-                <p className="text-xs tracking-widest text-[var(--gold)] uppercase mb-4">Custom Requirement?</p>
-                <h3 className="font-display text-xl font-semibold leading-tight">
+            {/* CTA card - Spans 2 rows in the right-most column */}
+            <div className="lg:col-start-4 lg:row-span-2 p-8 flex flex-col justify-between rounded-2xl relative overflow-hidden"
+              style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98))", border: "1px solid var(--border)" }}>
+              {/* Ornamental geometry */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--gold)] blur-[100px] opacity-10 pointer-events-none rounded-full" />
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[var(--gold)] blur-[80px] opacity-5 pointer-events-none rounded-full" />
+              
+              <div className="relative z-10 space-y-4">
+                <p className="inline-block text-[10px] tracking-[0.2em] text-[var(--gold)] uppercase font-semibold border border-[var(--gold)]/30 px-3 py-1.5 rounded-full bg-[var(--gold)]/5">
+                  Custom Requirement?
+                </p>
+                <h3 className="font-display text-[1.75rem] md:text-3xl font-semibold leading-tight text-white mb-2">
                   Tell us what you need to build
                 </h3>
-                <p className="mt-3 text-sm text-[var(--text-dim)]">
-                  Our engineers assess your requirements and propose the most reliable and cost-effective solution.
+                <p className="text-sm md:text-[0.95rem] text-white/60 leading-relaxed max-w-[90%]">
+                  Our engineers assess your specific industrial or research requirements and propose the most reliable, cost-effective solution.
                 </p>
               </div>
-              <Link
-                href="/contact"
-                className="mt-6 self-start inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:opacity-90"
-                style={{ background: "var(--gold)", color: "var(--on-gold)" }}
-              >
-                Contact Engineers
-              </Link>
+              <div className="relative z-10 mt-10 md:mt-16">
+                <Link
+                  href="/contact"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-semibold transition-all hover:scale-[1.02] shadow-[0_4px_14px_0_rgba(0,0,0,0.39)]"
+                  style={{ background: "var(--gold)", color: "var(--on-gold)" }}
+                >
+                  Contact Engineers →
+                </Link>
+              </div>
             </div>
           </div>
         </div>
