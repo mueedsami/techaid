@@ -101,6 +101,7 @@ export default function Navbar() {
     <header
       className="fixed top-0 left-0 right-0 z-50"
       style={{
+        zIndex: 50,
         height: 64,
         background: scrolled ? "rgba(255,255,255,0.88)" : "rgba(255,255,255,0.76)",
         boxShadow: scrolled ? "var(--nav-shadow)" : "none",
