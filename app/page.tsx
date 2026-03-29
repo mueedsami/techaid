@@ -368,8 +368,8 @@ export default async function HomePage() {
             <div className="lg:col-start-4 lg:row-start-1 lg:row-span-2 p-8 flex flex-col justify-between rounded-2xl relative overflow-hidden"
               style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98))", border: "1px solid var(--border)" }}>
               {/* Ornamental geometry */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white blur-[100px] opacity-10 pointer-events-none rounded-full" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white blur-[80px] opacity-5 pointer-events-none rounded-full" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--gold)] blur-[100px] opacity-10 pointer-events-none rounded-full" />
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[var(--gold)] blur-[80px] opacity-5 pointer-events-none rounded-full" />
               
               <div className="relative z-10 space-y-4">
                 <p className="inline-block text-[10px] tracking-[0.2em] text-white uppercase font-semibold border border-white/30 px-3 py-1.5 rounded-full bg-white/10">
