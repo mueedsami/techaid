@@ -42,7 +42,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
         {/* brand */}
         <div className="col-span-2 md:col-span-1">
-          <div className="gold-line" />
+          <Link href="/" className="mb-5 inline-block transition-transform hover:-translate-y-0.5">
+            <img
+              src="/Logo-size.jpg"
+              alt="Technical Aid logo"
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
           <p className="text-sm leading-relaxed" style={{ color: "var(--text-dim)" }}>
             Technical Aid is Bangladesh's trusted partner for engineering equipment, industrial automation, and technical education.
           </p>
