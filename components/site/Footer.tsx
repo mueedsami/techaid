@@ -59,18 +59,25 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* pages */}
+        {/* useful links */}
         <div>
-          <p className="text-xs tracking-widest uppercase mb-5 font-medium" style={{ color: "var(--gold)" }}>Pages</p>
+          <p className="text-xs tracking-widest uppercase mb-5 font-medium" style={{ color: "var(--gold)" }}>Useful Links</p>
           <ul className="space-y-3">
-            {nav.map(n => (
-              <li key={n.href}>
-                <Link
-                  href={n.href}
+            {[
+              { label: "VAT", href: "https://vat.gov.bd/sap/bc/ui5_ui5/sap/zmcf_pri/index.html#/Welcome" },
+              { label: "EGP", href: "https://www.eprocure.gov.bd/Index.jsp" },
+              { label: "CPTU", href: "https://www.eprocure.gov.bd/Index.jsp" },
+              { label: "UGC", href: "http://www.ugc-universities.gov.bd/" },
+            ].map(link => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm hover-line transition-colors text-[var(--text-dim)] hover:text-[var(--text)]"
                 >
-                  {n.label}
-                </Link>
+                  {link.label}
+                </a>
               </li>
             ))}
           </ul>
