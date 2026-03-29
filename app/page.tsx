@@ -99,7 +99,7 @@ export default async function HomePage() {
     : [];
 
   return (
-    <main className="overflow-x-hidden">
+    <main className="overflow-x-hidden -mt-16">
 
       {/* ══════════════════════════════════════════════════
           HERO
