@@ -162,7 +162,7 @@ export default function Navbar() {
             </button>
             {servicesOpen && (
               <div className="absolute left-0 mt-4 w-60 rounded-2xl overflow-hidden transition-all"
-                style={{ background: "#ffffff", zIndex: 99999, border: "1px solid var(--border)", boxShadow: "var(--shadow-md)" }}>
+                style={{ backgroundColor: "#ffffff", zIndex: 99999, border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 40px 100px -20px rgba(0,0,0,0.25), 0 0 30px rgba(0,0,0,0.05)" }}>
                 <div className="p-2">
                   {SERVICES.map((s) => (
                     <Link key={s.hash} href={`/services#${s.hash}`}
@@ -199,7 +199,7 @@ export default function Navbar() {
             </button>
             {productsOpen && (
               <div className="absolute left-1/2 -translate-x-1/2 mt-4 w-max min-w-[650px] max-w-[800px] rounded-2xl transition-all"
-                 style={{ background: "#ffffff", zIndex: 99999, border: "1px solid var(--border)", boxShadow: "var(--shadow-md)" }}>
+                 style={{ backgroundColor: "#ffffff", zIndex: 99999, border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 40px 100px -20px rgba(0,0,0,0.25), 0 0 30px rgba(0,0,0,0.05)" }}>
                 <div className="p-8">
                   <div className="flex items-center justify-between mb-6 pb-5" style={{ borderBottom: "1px solid var(--border)" }}>
                     <div className="flex flex-col">
