@@ -55,7 +55,7 @@ export default function ServiceSection({
           {image && (
             <>
               <div
-                className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105 mix-blend-multiply"
+                className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105 mix-blend-multiply pointer-events-none"
                 style={{
                   backgroundImage: `url('${image}')`,
                   backgroundSize: "cover",
@@ -63,17 +63,17 @@ export default function ServiceSection({
                   opacity: 0.15,
                 }}
               />
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#f4f8ff] via-[#f4f8ff]/70 to-transparent" />
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#f4f8ff] via-[#f4f8ff]/70 to-transparent pointer-events-none" />
             </>
           )}
-          <div className="relative z-10">
+          <div className="relative z-10 flex-1">
             <p className="font-display font-light select-none leading-none mb-4"
               style={{ fontSize: "clamp(4rem,8vw,6rem)", color: "var(--border-2)" }}>
               {number}
             </p>
             <h3 className="font-display text-xl md:text-2xl leading-tight">{title}</h3>
           </div>
-          <div className="mt-8 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
+          <div className="mt-8 pt-6 relative z-10" style={{ borderTop: "1px solid var(--border)" }}>
             <a
               href={linkUrl}
               target={linkUrl.startsWith("http") ? "_blank" : undefined}

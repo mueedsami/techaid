@@ -17,7 +17,7 @@ const services = [
       "Supplier identification & technical evaluation",
       "Negotiation, QA, import coordination & local delivery",
     ],
-    image: "https://images.unsplash.com/photo-1586528116311-ad8ed7c80a30?q=80&w=1000&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "supply-installation",
