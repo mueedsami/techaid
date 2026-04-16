@@ -51,19 +51,19 @@ export default function ServiceSection({
       <div className="grid lg:grid-cols-[280px_1fr]">
         {/* left number/title block */}
         <div className="relative p-8 md:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r overflow-hidden group"
-          style={{ borderColor: "var(--border)", background: "var(--surface-2)" }}>
+          style={{ borderColor: "var(--border)", background: "#f4f8ff" }}>
           {image && (
             <>
               <div
-                className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105"
+                className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105 mix-blend-multiply"
                 style={{
                   backgroundImage: `url('${image}')`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  opacity: 0.25,
+                  opacity: 0.15,
                 }}
               />
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[var(--surface-2)] via-[var(--surface-2)]/60 to-transparent" />
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#f4f8ff] via-[#f4f8ff]/70 to-transparent" />
             </>
           )}
           <div className="relative z-10">
