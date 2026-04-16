@@ -17,6 +17,7 @@ const services = [
       "Supplier identification & technical evaluation",
       "Negotiation, QA, import coordination & local delivery",
     ],
+    image: "https://images.unsplash.com/photo-1586528116311-ad8ed7c80a30?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "supply-installation",
@@ -32,6 +33,7 @@ const services = [
       "Cable laying, termination, earthing & safety compliance",
       "Design, drawings, load calculation, maintenance support",
     ],
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "repairing-servicing",
@@ -47,6 +49,7 @@ const services = [
       "Calibration, inspection, thermal checking & performance verification",
       "Fast response to minimize downtime",
     ],
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "training",
@@ -62,6 +65,7 @@ const services = [
       "Mechanical skills (maintenance, hydraulics, pneumatics)",
       "Customized programs for universities and industries",
     ],
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "design-implementation",
@@ -77,21 +81,16 @@ const services = [
       "Automation: PLC control, SCADA, IoT monitoring solutions",
       "Commissioning and production-ready delivery",
     ],
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop",
   },
   {
     id: "student-projects",
     number: "06",
     title: "Student Projects",
-    intro: "Comprehensive mentorship, hardware access, and technical guidance for university engineering projects and research initiatives.",
-    bullets: [
-      "Hardware selection and sourcing guidance",
-      "Prototype design and fabrication support",
-      "Embedded systems and IoT programming mentorship",
-      "Access to professional testing and measurement tools",
-      "Debugging and troubleshooting assistance",
-      "Technical documentation review",
-      "Industry-standard best practices implementation",
-    ],
+    intro: "Explore our dedicated product and service section designed for students, makers, and innovators. From essential components and complete project kits to professional services like 3D printing, laser cutting, and custom fabrication, we provide everything you need to turn your ideas into reality. Click the link below to visit our online store, where you can explore our full range of products and services at student-friendly prices.",
+    linkText: "Visit our store →",
+    linkUrl: "https://wavenics.com",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop",
   },
 ];
 
