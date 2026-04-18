@@ -3,13 +3,13 @@ import { fetchClients, fetchTestimonials } from "@/lib/api";
 
 const typeBadgeStyle = (type: string) => {
   switch (type) {
-    case "University":
+    case "Universities":
       return { borderColor: "rgba(37,99,235,0.18)", background: "rgba(37,99,235,0.08)", color: "#1d4ed8" };
-    case "Industry":
+    case "Industries":
       return { borderColor: "rgba(16,185,129,0.18)", background: "rgba(16,185,129,0.08)", color: "#047857" };
     case "Government":
       return { borderColor: "rgba(245,158,11,0.18)", background: "rgba(245,158,11,0.08)", color: "#b45309" };
-    case "Institute":
+    case "Institutes":
       return { borderColor: "rgba(139,92,246,0.18)", background: "rgba(139,92,246,0.08)", color: "#6d28d9" };
     case "Research":
       return { borderColor: "rgba(6,182,212,0.18)", background: "rgba(6,182,212,0.08)", color: "#0e7490" };
